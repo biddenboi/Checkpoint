@@ -1,0 +1,12 @@
+div.taskDisplay {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+table.taskList, table.taskList th, table.taskList td {
+  border: 1px solid rgb(0, 0, 0);
+}
+
+table.taskList {
+  border-collapse: collapse;
+}
