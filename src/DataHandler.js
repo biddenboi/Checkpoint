@@ -56,12 +56,32 @@ class DataHandler {
         return window.indexedDB;
     }
 
+    async clearTaskData() {
+        return new Promise((resolve, reject) => {
+            const transaction = this.database.transaction(["tasks"], "readwrite");
+            const tasks = transaction.objectStore("tasks");
+
+            const objectStoreRequest = tasks.clear();
+
+            objectStoreRequest.onsuccess = (e) => {
+                resolve();
+            }
+
+            objectStoreRequest.onerror = (e) => {
+                reject(objectStoreRequest.error);
+            }
+        })
+    }
+
     //createdAt, username, taskName, taskDescription, taskDifficulty
     async addTaskLog(task) {
         await this.ready;
 
         return new Promise((resolve, reject) => {
             const transaction = this.database.transaction(["tasks"], "readwrite");
+        
+            const tasks = transaction.objectStore("tasks");
+            const request = tasks.add(task);  
             
             transaction.oncomplete = (event) => {
                 resolve();
@@ -70,9 +90,6 @@ class DataHandler {
             transaction.onerror = (event) => {
                 reject(transaction.error);
             }
-
-            const tasks = transaction.objectStore("tasks");
-            const request = tasks.add(task);   
 
             return request;
         })

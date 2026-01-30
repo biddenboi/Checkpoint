@@ -37,7 +37,12 @@ function App() {
   }
 
   const handleUpload = async (e) => {
-    console.log(fileData);
+    const tasksAsJSONString = await fileData.text();
+    DataHandlerState.clearTaskData();
+    
+    JSON.parse(tasksAsJSONString).forEach((task) => {
+      DataHandlerState.addTaskLog(task);
+    })
   } 
 
   const handleDownload = async (e) => {
