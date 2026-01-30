@@ -5,6 +5,7 @@ import DataHandler from './DataHandler.js'
 function App() {
   const [DataHandlerState, setDataHandlerState] = useState(() => new DataHandler());
   const [tasksState, setTasksState] = useState([]);
+  const [fileData, setFileData] = useState(null);
 
 
    // Load tasks when component mounts
@@ -35,6 +36,14 @@ function App() {
     e.target.reset();
   }
 
+  const handleUpload = async (e) => {
+    console.log(fileData);
+  } 
+
+  const handleDownload = async (e) => {
+    await DataHandlerState.getDataAsJSON();
+  }
+
   return <div className="taskDisplay">
     <form action="" className="taskCreationMenu"
       onSubmit={handleSubmit}>
@@ -42,26 +51,37 @@ function App() {
           Task Name:
           <input type="text" name="taskName"/>
       </label>
-      <input type="submit"/>
+      <input 
+        type="submit" 
+        name="fileData"/>
     </form>
-    <table className="taskList">
-      <thead>
-      <tr>
-        <th>Date</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        tasksState.map((element, index) => (
-          <tr key={element.createdAt}>
-            <td>{new Date(element.createdAt).toLocaleDateString()}</td>
-            <td>{element.taskName}</td>
+    <div className="rankList">
+      <div>
+        <input type="file"
+          onChange={
+          async e => setFileData(e.target.files[0])} />
+        <button onClick={handleUpload}>Upload</button>
+        <button onClick={handleDownload}>Download</button>
+      </div>
+      <table className="taskList">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
           </tr>
-        ))
-      }
-    </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {
+            tasksState.map((element, index) => (
+              <tr key={element.createdAt}>
+                <td>{new Date(element.createdAt).toLocaleDateString()}</td>
+                <td>{element.taskName}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
 }
 

@@ -111,6 +111,26 @@ class DataHandler {
         })
     }
 
+    async getDataAsJSON() {
+        await this.ready;
+
+        return new Promise(async (resolve, reject) => {
+            //so what this does is basically convert the data into a string, blob gives the data a location which is in url, and then we create an attribute with download using HTML 5 download method
+            const data = await this.getTasks();
+
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'taskData.json';
+            link.click();
+
+            URL.revokeObjectURL(url); //revoke since blob urls don't get collected by garbage collector
+        })
+    }
+
     async getTasksFromRange(startDate, endDate) {
         await this.ready;
      
