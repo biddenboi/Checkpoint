@@ -22,6 +22,10 @@ form.settings label {
     margin:20px 0px;
 }
 
+label.usernameSetting > input {
+    font-weight: 400;
+}
+
 form.settings button {
     margin-top:15px;
     margin-left:auto;

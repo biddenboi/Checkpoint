@@ -1,12 +1,19 @@
 import './Settings.css'
 
+const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    console.log(formData.get("username"))
+}
+
 function Settings() {
-    return <form action="" className="settings">
+    return <form onSubmit={handleSubmit} className="settings">
         {SettingsGroup(
             <>
                 <label className="usernameSetting">
                     Username:
-                    <input type="text" />
+                    <input type="text" placeholder='PLACEHOLDER' name="username"/>
                 </label>  
             </>
         )}
