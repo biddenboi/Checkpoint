@@ -1,13 +1,28 @@
 import './Settings.css'
-
-const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    console.log(formData.get("username"))
-}
+import { useContext, useMemo } from 'react';
+import { DatabaseConnectionContext } from '../App';
+import PlayerDatabase from "../network/PlayerDatabase";
 
 function Settings() {
+    const databaseConnection = useContext(DatabaseConnectionContext);
+    const playerDatabase = useMemo(
+        () => new PlayerDatabase(databaseConnection)
+        ,[databaseConnection]
+    );
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        const formData = new FormData(e.target);
+    
+        const player = {
+            username: formData.get("username"),
+            createdAt: new Date().toISOString().split('T')[0]
+        }
+        await playerDatabase.putPlayer(player);
+    }
+    
+
     return <form onSubmit={handleSubmit} className="settings">
         {SettingsGroup(
             <>
