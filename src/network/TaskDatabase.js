@@ -26,7 +26,7 @@ class TaskDatabase {
 
     //createdAt, username, taskName, taskDescription, taskDifficulty
     async addTaskLog(task) {
-        await this.databaseConnection.databaseConnection.ready;
+        await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
             const transaction = this.databaseConnection.database.transaction(["tasks"], "readwrite");
@@ -49,7 +49,7 @@ class TaskDatabase {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.database.transaction(["tasks"], "readwrite");
+            const transaction = this.databaseConnection.database.transaction(["tasks"], "readwrite");
             const tasksObjectStore = transaction.objectStore("tasks");
             const request = tasksObjectStore.delete(createdAt);
 
