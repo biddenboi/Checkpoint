@@ -61,3 +61,10 @@ form.taskCreationMenu label {
   display:flex;
   flex-direction: column;
 }
+
+label > input:is([type="text"], [type="number"]):read-only {
+  color:rgb(90, 90, 90);
+  border:0;
+  text-overflow: ellipsis;
+  outline:none;
+}

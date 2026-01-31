@@ -73,39 +73,39 @@ function App() {
       <div className="formInputs">
         <label>
           Task Name:
-          <input type="text" name="taskName"/>
+          <input type="text" name="taskName" readOnly={inTaskSession}/>
         </label>
         <label>
           Where did you pick to work and why:
-          <input type="text" name="location"/>
+          <input type="text" name="location" readOnly={inTaskSession}/>
         </label>
         <label>
           Where are your distractions:
-          <input type="text" name="distractions"/>
+          <input type="text" name="distractions" readOnly={inTaskSession}/>
         </label>
         <label>
           Is this task similar to what you did before:
-          <input type="text" name="similarity"/>
+          <input type="text" name="similarity" readOnly={inTaskSession}/>
         </label>
         <label>
           Is this being done early in the day:
-          <input type="text" name="timeOfStart"/>
+          <input type="text" name="timeOfStart" readOnly={inTaskSession}/>
         </label>
         <label>
           Why did you pick this task:
-          <input type="text" name="reasonToSelect"/>
+          <input type="text" name="reasonToSelect" readOnly={inTaskSession}/>
         </label>
         <label>
           How will you maximize efficiency:
-          <input type="text" name="efficiency"/>
+          <input type="text" name="efficiency" readOnly={inTaskSession}/>
         </label>
         <label>
           How long will this take (minutes):
-          <input type="number" name="estimatedDuration"/>
+          <input type="number" name="estimatedDuration" readOnly={inTaskSession}/>
         </label>
         <label>
           How much time for buffer (minutes):
-          <input type="number" name="estimatedBuffer"/>
+          <input type="number" name="estimatedBuffer" readOnly={inTaskSession}/>
         </label>
       </div>
       {
