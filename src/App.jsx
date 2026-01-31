@@ -4,6 +4,14 @@ import './App.css';
 import { useState } from 'react';
 
 function App() {
+  useEffect(() => {
+    player = {
+      createdAt: newDate().toISOString().split('T')[0],
+      username: "testingUser",
+    }
+    //FINISH PUSHING PLAYER DATA
+  })
+
   const [currentPage, setCurrentPage] = useState("dashboard");
   return <>
     <div className="navigation-bar">

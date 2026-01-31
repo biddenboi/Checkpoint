@@ -112,7 +112,7 @@ class DataHandler {
             const transaction = this.database.transaction(["tasks"], "readwrite");
         
             const tasks = transaction.objectStore("tasks");
-            const request = tasks.add(task);  
+            const request = tasks.put(task);  
             
             transaction.oncomplete = (event) => {
                 resolve();
@@ -125,7 +125,6 @@ class DataHandler {
             return request;
         })
     }
-
     async removeTaskLog(createdAt) {
         await this.ready;
 
@@ -143,7 +142,6 @@ class DataHandler {
             }
         })
     }
-
     async getTasks() {
         await this.ready;
 
@@ -158,7 +156,6 @@ class DataHandler {
             transaction.onerror = () => reject(transaction.error);
         })
     }
-
     async getDataAsJSON() {
         await this.ready;
 
@@ -178,7 +175,6 @@ class DataHandler {
             URL.revokeObjectURL(url); //revoke since blob urls don't get collected by garbage collector
         })
     }
-
     async getTasksFromRange(startDate, endDate) {
         await this.ready;
      
@@ -201,8 +197,7 @@ class DataHandler {
              
              transaction.onerror = () => reject(transaction.error);
          })
-     }
-     
+    }  
      async getTask(createdAt) {
          await this.ready;
        
@@ -216,7 +211,27 @@ class DataHandler {
            request.onerror = () => reject(request.error);
            transaction.onerror = () => reject(transaction.error);
          });
-     }
+    }
+    async putPlayer(player) {
+        await this.ready;
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.database.transaction(["players"], "readwrite");
+
+            const players = transaction.objectStore("players");
+            const request = players.add(player);
+
+            transaction.oncomplete = (event) => {
+                resolve();
+            }
+
+            transaction.onerror = (event) => {
+                reject(transaction.error);
+            }
+
+            return request;
+        })
+    }
 }
 
 export default DataHandler;
