@@ -13,7 +13,8 @@ class DatabaseConnection {
             const tasksObjectStore = this.database.createObjectStore("tasks", { keyPath: "createdAt"});
             tasksObjectStore.createIndex("taskName", "taskName", { unique:false });
 
-        }else if (oldVersion < 2) {
+        }
+        if (oldVersion < 2) {
             this.database = event.target.result;
             const transaction = event.target.transaction; //special type of transaction for versionchange
             const tasksObjectStore = transaction.objectStore("tasks");
@@ -55,7 +56,8 @@ class DatabaseConnection {
         /** to store (existing) data
             https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
         */  
-        }else if (oldVersion < 3) {
+        }
+        if (oldVersion < 3) {
             const playersObjectStore = this.database.createObjectStore("players", { keyPath: "createdAt"});
             playersObjectStore.createIndex("username", "username", { unique:false });
         }
