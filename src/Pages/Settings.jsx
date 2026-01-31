@@ -24,7 +24,15 @@ function Settings() {
     
 
     return <form onSubmit={handleSubmit} className="settings">
-        {SettingsGroup(
+        {SettingsGroup("Personal",
+            <>
+                <label className="usernameSetting">
+                    Username:
+                    <input type="text" placeholder='PLACEHOLDER' name="username"/>
+                </label>  
+            </>
+        )}
+        {SettingsGroup("Data",
             <>
                 <label className="usernameSetting">
                     Username:
@@ -38,9 +46,9 @@ function Settings() {
         
 }
 
-function SettingsGroup(inputs) {
+function SettingsGroup(category, inputs) {
     return <div className="settingsGroup">
-        <h3>Personal</h3>
+        <h3>{category}</h3>
         <hr />
         {inputs}
     </div>
