@@ -28,7 +28,7 @@ function App() {
   return <>
     <div className="navigation-bar">
       <a onClick={() => setCurrentPage("dashboard")}>Dashboard</a>
-      <a onClick={() => setCurrentPage("s")}>Settings</a>
+      <a onClick={() => setCurrentPage("settings")}>Settings</a>
     </div>
     <hr />
     <DatabaseConnectionContext.Provider value={databaseConnection}>
