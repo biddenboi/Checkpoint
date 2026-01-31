@@ -54,7 +54,8 @@ class DataHandler {
             https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
         */  
         }else if (oldVersion < 3) {
-
+            const playersObjectStore = this.database.createObjectStore("players", { keyPath: "createdAt"});
+            playersObjectStore.createIndex("username", "username", { unique:false });
         }
     }
 
@@ -64,7 +65,7 @@ class DataHandler {
         } 
 
         this.ready = new Promise((resolve, reject) => {
-            const request = window.indexedDB.open("CheckpointDatabase", 2);
+            const request = window.indexedDB.open("CheckpointDatabase", 3);
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);
