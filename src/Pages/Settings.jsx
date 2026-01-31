@@ -1,7 +1,7 @@
 import './Settings.css'
 
 function Settings() {
-    return <div className="settings">
+    return <form action="" className="settings">
         {SettingsGroup(
             <>
                 <label className="usernameSetting">
@@ -10,7 +10,10 @@ function Settings() {
                 </label>  
             </>
         )}
-    </div>
+        <hr />
+        <button>Save Changes</button>
+    </form>
+        
 }
 
 function SettingsGroup(inputs) {
