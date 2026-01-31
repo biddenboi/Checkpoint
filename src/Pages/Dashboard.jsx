@@ -51,25 +51,6 @@ function Dashboard() {
 
     e.target.reset();
   }
-  /** 
-  const handleUpload = async (e) => {
-    
-    const tasksAsJSONString = await fileData.text();
-    taskDatabase.clearTaskData();
-
-    JSON.parse(tasksAsJSONString).forEach((task) => {
-      taskDatabase.addTaskLog(task);
-    })
-
-    const tasks = await taskDatabase.getTasks();
-    setTasksState(tasks);
-  } 
-
-  const handleDownload = async (e) => {
-    await taskDatabase.getDataAsJSON();
-  }
-
-  */
 
   const handleGiveUpTask = async (e) => {
     e.target.form.reset();
