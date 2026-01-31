@@ -1,7 +1,7 @@
 import './Dashboard.css'
 import { useState, useEffect, useContext, useMemo } from 'react'
 import { DatabaseConnectionContext } from '../App';
-import TaskDatabase from '../network/TaskDatabase';
+import TaskDatabase from '../network/TaskDatabase.js';
 
 function Dashboard() {
   const databaseConnection = useContext(DatabaseConnectionContext);
@@ -51,7 +51,7 @@ function Dashboard() {
 
     e.target.reset();
   }
-
+  /** 
   const handleUpload = async (e) => {
     
     const tasksAsJSONString = await fileData.text();
@@ -68,6 +68,8 @@ function Dashboard() {
   const handleDownload = async (e) => {
     await taskDatabase.getDataAsJSON();
   }
+
+  */
 
   const handleGiveUpTask = async (e) => {
     e.target.form.reset();
@@ -126,14 +128,6 @@ function Dashboard() {
       }
     </form>
     <div className="rankList">
-      <div>
-        <input type="file"
-          accept=".json"
-          onChange={
-          async e => setFileData(e.target.files[0])} />
-        <button onClick={handleUpload}>Upload</button>
-        <button onClick={handleDownload}>Download</button>
-      </div>
       <table className="taskList">
         <thead>
           <tr>
