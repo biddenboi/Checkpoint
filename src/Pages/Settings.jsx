@@ -119,7 +119,7 @@ function Settings() {
 }
 
 function SettingsGroup(category, inputs) {
-    return <div className="settingsGroup">
+    return <div className="settings-group">
         <h3>{category}</h3>
         <hr />
         {inputs}
