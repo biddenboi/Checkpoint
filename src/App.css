@@ -18,6 +18,16 @@ table.taskList {
   border-collapse: collapse;
 }
 
+div.taskFormButtons {
+  display:flex;
+  justify-content: space-evenly;
+}
+
+button.taskFormButtons {
+  width:70%;
+  align-self: center;
+}
+
 form.taskCreationMenu {
   grid-column-start: 2;
   grid-column-end: span 4;

@@ -6,6 +6,7 @@ function App() {
   const [DataHandlerState, setDataHandlerState] = useState(() => new DataHandler());
   const [tasksState, setTasksState] = useState([]);
   const [fileData, setFileData] = useState(null);
+  const [inTaskSession, setInTaskSession] = useState(false);
 
 
    // Load tasks when component mounts
@@ -39,6 +40,7 @@ function App() {
     // Reload tasks after adding  
     const tasks = await DataHandlerState.getTasks();
     setTasksState(tasks);
+    setInTaskSession(false);
 
     e.target.reset();
   }
@@ -58,6 +60,11 @@ function App() {
 
   const handleDownload = async (e) => {
     await DataHandlerState.getDataAsJSON();
+  }
+
+  const handleGiveUpTask = async (e) => {
+    e.target.form.reset();
+    setInTaskSession(false);
   }
 
   return <div className="taskDisplay">
@@ -101,7 +108,15 @@ function App() {
           <input type="number" name="estimatedBuffer"/>
         </label>
       </div>
-      <input type="submit" name="fileData"/>
+      {
+        inTaskSession ? 
+        <div className="taskFormButtons">
+          <button>Complete</button>
+          <button type="button">Broke Focus</button>
+          <button type="button" onClick={handleGiveUpTask}>Give Up</button>
+        </div> 
+        : <button onClick={() => setInTaskSession(true)} className="taskFormButtons" type="button">Start</button>
+      }
     </form>
     <div className="rankList">
       <div>
