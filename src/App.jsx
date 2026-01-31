@@ -29,7 +29,7 @@ function App() {
 
     await DataHandlerState.addTaskLog(task);
 
-    // Reload tasks after adding
+    // Reload tasks after adding  
     const tasks = await DataHandlerState.getTasks();
     setTasksState(tasks);
 
@@ -37,12 +37,16 @@ function App() {
   }
 
   const handleUpload = async (e) => {
+    
     const tasksAsJSONString = await fileData.text();
     DataHandlerState.clearTaskData();
-    
+
     JSON.parse(tasksAsJSONString).forEach((task) => {
       DataHandlerState.addTaskLog(task);
     })
+
+    const tasks = await DataHandlerState.getTasks();
+    setTasksState(tasks);
   } 
 
   const handleDownload = async (e) => {
@@ -56,13 +60,12 @@ function App() {
           Task Name:
           <input type="text" name="taskName"/>
       </label>
-      <input 
-        type="submit" 
-        name="fileData"/>
+      <input type="submit" name="fileData"/>
     </form>
     <div className="rankList">
       <div>
         <input type="file"
+          accept=".json"
           onChange={
           async e => setFileData(e.target.files[0])} />
         <button onClick={handleUpload}>Upload</button>
@@ -81,8 +84,7 @@ function App() {
               <tr key={element.createdAt}>
                 <td>{new Date(element.createdAt).toLocaleDateString()}</td>
                 <td>{element.taskName}</td>
-              </tr>
-            ))
+              </tr>))
           }
         </tbody>
       </table>
