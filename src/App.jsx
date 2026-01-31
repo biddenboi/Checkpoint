@@ -1,21 +1,28 @@
 import Dashboard from "./Pages/Dashboard";
 import Settings from "./Pages/Settings";
 import './App.css';
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, useMemo } from 'react';
 import DatabaseConnection from "./network/DatabaseConnection";
+import PlayerDatabase from "./network/PlayerDatabase";
 
 export const DatabaseConnectionContext = createContext();
 
 function App() {
   const databaseConnection = new DatabaseConnection();
+  const playerDatabase = useMemo(
+    () => new PlayerDatabase(databaseConnection),
+    [databaseConnection]
+  );
 
   useEffect(() => {
-    const player = {
-      createdAt: new Date().toISOString().split('T')[0],
-      username: "testingUser",
-    }
+
     //FINISH PUSHING PLAYER DATA
-  })
+    const createPlayer = async () => {
+      await playerDatabase.createPlayer("Unnamed");
+    }
+
+    createPlayer();
+  }, [playerDatabase])
 
   const [currentPage, setCurrentPage] = useState("dashboard");
   return <>
@@ -26,7 +33,7 @@ function App() {
     <hr />
     <DatabaseConnectionContext.Provider value={databaseConnection}>
       {
-        currentPage == "dashboard" ?
+        currentPage === "dashboard" ?
         <Dashboard></Dashboard>
         : <Settings></Settings>
       }
