@@ -35,15 +35,33 @@ function Settings() {
 
         <hr />
 
-        <button>Save Changes</button>
+        <button className="saveChanges">Save Changes</button>
 
         <br />
 
         {SettingsGroup("Data",
             <>
-                <label className="usernameSetting">
-                    Download File Data:
-                    <input type="text" placeholder='PLACEHOLDER' name="username"/>
+                <label>
+                    Download Task Data:
+                    <button type="button">Download</button>
+                </label>  
+                <label>
+                    Download Player Data:
+                    <button type="button">Download</button>
+                </label>  
+                <label>
+                    Upload File Data:
+                    <div>
+                        <input type="file" />
+                        <button type="button">Upload</button>
+                    </div>
+                </label>  
+                <label>
+                    Upload Player Data:
+                    <div>
+                        <input type="file" />
+                        <button type="button">Upload</button>
+                    </div>
                 </label>  
             </>
         )}
