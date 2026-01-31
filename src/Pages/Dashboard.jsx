@@ -114,8 +114,6 @@ function Dashboard() {
           <tr>
             <th>Player Name</th>
             <th>Name</th>
-            <th>Est. Time</th>
-            <th>Est. Buffer</th>
           </tr>
         </thead>
         <tbody>
@@ -124,8 +122,6 @@ function Dashboard() {
               <tr key={element.createdAt}>
                 <td>{new Date(element.createdAt).toLocaleDateString()}</td>
                 <td>{element.taskName}</td>
-                <td>{element.estimatedDuration}</td>
-                <td>{element.estimatedBuffer}</td>
               </tr>))
           }
         </tbody>
