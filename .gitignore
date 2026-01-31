@@ -22,3 +22,35 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Electron-specific
+# Build output
+dist/
+out/
+build/
+
+# Electron-builder output
+dist-electron/
+release/
+
+# Electron cache
+.cache/
+*.dmg
+*.zip
+*.exe
+*.deb
+*.rpm
+*.AppImage
+
+# Electron builder config
+dist/builder-effective-config.yaml
+dist/*.blockmap
+dist/mac/
+dist/mac-arm64/
+dist/win-unpacked/
+dist/linux-unpacked/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
