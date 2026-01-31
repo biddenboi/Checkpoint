@@ -25,6 +25,13 @@ function App() {
     const task = {
       createdAt: new Date().toISOString(),
       taskName: formData.get("taskName"),
+      location: formData.get("locations"),
+      similarity: formData.get("similarity"),
+      timeOfStart: formData.get("timeOfStart"),
+      reasonToSelect: formData.get("reasonToSelect"),
+      efficiency: formData.get("efficiency"),
+      estimatedDuration: formData.get("estimatedDuration"),
+      estimatedBuffer: formData.get("estimatedBuffer"),
     }
 
     await DataHandlerState.addTaskLog(task);
@@ -63,35 +70,35 @@ function App() {
         </label>
         <label>
           Where did you pick to work and why:
-          <input type="text" name="taskName"/>
+          <input type="text" name="location"/>
         </label>
         <label>
           Where are your distractions:
-          <input type="text" name="taskName"/>
+          <input type="text" name="distractions"/>
         </label>
         <label>
           Is this task similar to what you did before:
-          <input type="text" name="taskName"/>
+          <input type="text" name="similarity"/>
         </label>
         <label>
           Is this being done early in the day:
-          <input type="text" name="taskName"/>
+          <input type="text" name="timeOfStart"/>
         </label>
         <label>
           Why did you pick this task:
-          <input type="text" name="taskName"/>
+          <input type="text" name="reasonToSelect"/>
         </label>
         <label>
           How will you maximize efficiency:
-          <input type="text" name="taskName"/>
+          <input type="text" name="efficiency"/>
         </label>
         <label>
-          How long will this take:
-          <input type="text" name="taskName"/>
+          How long will this take (minutes):
+          <input type="number" name="estimatedDuration"/>
         </label>
         <label>
-          How much time for buffer:
-          <input type="text" name="taskName"/>
+          How much time for buffer (minutes):
+          <input type="number" name="estimatedBuffer"/>
         </label>
       </div>
       <input type="submit" name="fileData"/>
@@ -109,7 +116,9 @@ function App() {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Description</th>
+            <th>Name</th>
+            <th>Est. Time</th>
+            <th>Est. Buffer</th>
           </tr>
         </thead>
         <tbody>
@@ -118,6 +127,8 @@ function App() {
               <tr key={element.createdAt}>
                 <td>{new Date(element.createdAt).toLocaleDateString()}</td>
                 <td>{element.taskName}</td>
+                <td>{element.estimatedDuration}</td>
+                <td>{element.estimatedBuffer}</td>
               </tr>))
           }
         </tbody>

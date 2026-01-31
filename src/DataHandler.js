@@ -9,7 +9,7 @@ class DataHandler {
         } 
 
         this.ready = new Promise((resolve, reject) => {
-            const request = window.indexedDB.open("CheckpointDatabase", 1);
+            const request = window.indexedDB.open("CheckpointDatabase", 2);
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);
@@ -25,19 +25,44 @@ class DataHandler {
                     const tasksObjectStore = this.database.createObjectStore("tasks", { keyPath: "createdAt"});
                     tasksObjectStore.createIndex("taskName", "taskName", { unique:false });
 
-                    /** 
-                    tasksObjectStore.transaction.oncomplete = (event) => {
-                        const testData = [
-                            {createdAt: "2024-01-02T01:55:57.459Z", username: "hello", taskName: "calc", taskDescription: "calc hw", taskDifficulty: 2}
-                        ];
-        
+                }else if (oldVersion < 2) {
+                    this.database = event.target.result;
+                    const transaction = event.target.transaction; //special type of transaction for versionchange
+                    const tasksObjectStore = transaction.objectStore("tasks");
+                    
+                    tasksObjectStore.createIndex("location", "location");
+                    tasksObjectStore.createIndex("distractions", "distractions");
+                    tasksObjectStore.createIndex("similarity", "similarity");
+                    tasksObjectStore.createIndex("timeOfStart", "timeOfStart");
+                    tasksObjectStore.createIndex("reasonToSelect", "reasonToSelect");
+                    tasksObjectStore.createIndex("efficiency", "efficiency");
+                    tasksObjectStore.createIndex("estimatedDuration", "estimatedDuration");
+                    tasksObjectStore.createIndex("estimatedBuffer", "estimatedBuffer");
+
+                    tasksObjectStore.oncomplete = (event) => {
                         const tasksObjectStore = this.database
                             .transaction("tasks", "readwrite")
                             .objectStore("tasks");
-                        testData.forEach((task) => {
-                            tasksObjectStore.add(task);
-                        })
-                    }*/
+                        
+                            const getAllRequest = tasksObjectStore.getAll();
+
+                            getAllRequest.oncomplete = () => {
+                                const tasks = getAllRequest.result;
+
+                                tasks.forEach((task) => {
+                                    task.location = task.location || "";
+                                    task.distractions = task.distractions || "";
+                                    task.similarity = task.similarity || "";
+                                    task.timeOfStart = task.timeOfStart || "";
+                                    task.reasonToSelect = task.reasonToSelect || "";
+                                    task.efficiency = task.efficiency || "";
+                                    task.estimatedDuration = task.estimatedDuration || "";
+                                    task.estimatedBuffer = task.estimatedBuffer || "";
+                                    
+                                    tasksObjectStore.put(task);
+                                })
+                            }
+                    }
                     
                 /** to store (existing) data
                     https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
