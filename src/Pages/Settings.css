@@ -4,12 +4,12 @@ form.settings {
     width:50%;
 }
 
-div.settingsGroup {
+div.settings-group {
     font-size:17px;
     font-weight:600;
 }
 
-div.settingsGroup h3 {
+div.settings-group h3 {
     margin-bottom:5px;
     margin-left:20%;
 }
@@ -21,11 +21,11 @@ form.settings label {
     justify-content: space-between;
 }
 
-div.settingsGroup input, div.settingsGroup button {
+div.settings-group input, div.settings-group button {
     font-weight: 400;
 }
 
-form.settings button.saveChanges {
+form.settings button.save-changes {
     margin-top:15px;
     margin-left:auto;
     margin-right:10%;

@@ -57,10 +57,10 @@ function Dashboard() {
     setInTaskSession(false);
   }
 
-  return <div className="taskDisplay">
-    <form action="" className="taskCreationMenu"
+  return <div className="dashboard">
+    <form action="" className="task-creation-menu"
       onSubmit={handleSubmit}>
-      <div className="formInputs">
+      <div className="form-inputs">
         <label>
           Task Name:
           <input type="text" name="taskName" readOnly={inTaskSession}/>
@@ -100,19 +100,19 @@ function Dashboard() {
       </div>
       {
         inTaskSession ? 
-        <div className="taskFormButtons">
+        <div className="task-form-buttons">
           <button>Complete</button>
           <button type="button">Broke Focus</button>
           <button type="button" onClick={handleGiveUpTask}>Give Up</button>
         </div> 
-        : <button onClick={() => setInTaskSession(true)} className="taskFormButtons" type="button">Start</button>
+        : <button onClick={() => setInTaskSession(true)} className="task-form-buttons" type="button">Start</button>
       }
     </form>
-    <div className="rankList">
-      <table className="taskList">
+    <div className="rank-list">
+      <table className="task-list">
         <thead>
           <tr>
-            <th>Date</th>
+            <th>Player Name</th>
             <th>Name</th>
             <th>Est. Time</th>
             <th>Est. Buffer</th>

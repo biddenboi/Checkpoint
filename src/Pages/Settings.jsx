@@ -68,7 +68,7 @@ function Settings() {
     return <form onSubmit={handleSubmit} className="settings">
         {SettingsGroup("Personal",
             <>
-                <label className="usernameSetting">
+                <label className="username-settings">
                     Username:
                     <input type="text" placeholder='PLACEHOLDER' name="username"/>
                 </label>  
@@ -77,7 +77,7 @@ function Settings() {
 
         <hr />
 
-        <button className="saveChanges">Save Changes</button>
+        <button className="save-changes">Save Changes</button>
 
         <br />
 
