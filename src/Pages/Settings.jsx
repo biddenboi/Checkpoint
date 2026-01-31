@@ -21,7 +21,6 @@ function Settings() {
         }
         await playerDatabase.putPlayer(player);
     }
-    
 
     return <form onSubmit={handleSubmit} className="settings">
         {SettingsGroup("Personal",
