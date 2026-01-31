@@ -1,12 +1,17 @@
 import Dashboard from "./Pages/Dashboard";
 import Settings from "./Pages/Settings";
 import './App.css';
-import { useState } from 'react';
+import { useState, createContext, useEffect } from 'react';
+import DatabaseConnection from "./network/DatabaseConnection";
+
+export const DatabaseConnectionContext = createContext();
 
 function App() {
+  const databaseConnection = new DatabaseConnection();
+
   useEffect(() => {
-    player = {
-      createdAt: newDate().toISOString().split('T')[0],
+    const player = {
+      createdAt: new Date().toISOString().split('T')[0],
       username: "testingUser",
     }
     //FINISH PUSHING PLAYER DATA
@@ -19,11 +24,13 @@ function App() {
       <a onClick={() => setCurrentPage("s")}>Settings</a>
     </div>
     <hr />
-    {
-      currentPage == "dashboard" ?
-      <Dashboard></Dashboard>
-      : <Settings></Settings>
-    }
+    <DatabaseConnectionContext.Provider value={databaseConnection}>
+      {
+        currentPage == "dashboard" ?
+        <Dashboard></Dashboard>
+        : <Settings></Settings>
+      }
+    </DatabaseConnectionContext.Provider>
   </>
 }
 export default App;

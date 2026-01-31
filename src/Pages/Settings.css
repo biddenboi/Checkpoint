@@ -23,7 +23,7 @@ form.settings label {
 }
 
 label.usernameSetting > input {
-    font-weight: 400;
+    font-weight: 400;;
 }
 
 form.settings button {

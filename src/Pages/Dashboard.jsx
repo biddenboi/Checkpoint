@@ -1,9 +1,15 @@
 import './Dashboard.css'
-import { useState, useEffect } from 'react'
-import DataHandler from '../DataHandler.js'
+import { useState, useEffect, useContext, useMemo } from 'react'
+import { DatabaseConnectionContext } from '../App';
+import TaskDatabase from '../network/TaskDatabase';
 
 function Dashboard() {
-  const [DataHandlerState, setDataHandlerState] = useState(() => new DataHandler());
+  const databaseConnection = useContext(DatabaseConnectionContext);
+  const taskDatabase = useMemo(
+    () => new TaskDatabase(databaseConnection)
+    ,[databaseConnection]
+  );
+
   const [tasksState, setTasksState] = useState([]);
   const [fileData, setFileData] = useState(null);
   const [inTaskSession, setInTaskSession] = useState(false);
@@ -12,11 +18,11 @@ function Dashboard() {
    // Load tasks when component mounts
    useEffect(() => {
     const loadTasks = async () => {
-      const tasks = await DataHandlerState.getTasks();
+      const tasks = await taskDatabase.getTasks();
       setTasksState(tasks);
     };
     loadTasks();
-  }, [DataHandlerState]);
+  }, [taskDatabase]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,8 +32,9 @@ function Dashboard() {
     const task = {
       createdAt: new Date().toISOString(),
       taskName: formData.get("taskName"),
-      location: formData.get("locations"),
+      location: formData.get("location"),
       similarity: formData.get("similarity"),
+      distractions: formData.get("distractions"),
       timeOfStart: formData.get("timeOfStart"),
       reasonToSelect: formData.get("reasonToSelect"),
       efficiency: formData.get("efficiency"),
@@ -35,10 +42,10 @@ function Dashboard() {
       estimatedBuffer: formData.get("estimatedBuffer"),
     }
 
-    await DataHandlerState.addTaskLog(task);
+    await taskDatabase.addTaskLog(task);
 
     // Reload tasks after adding  
-    const tasks = await DataHandlerState.getTasks();
+    const tasks = await taskDatabase.getTasks();
     setTasksState(tasks);
     setInTaskSession(false);
 
@@ -48,18 +55,18 @@ function Dashboard() {
   const handleUpload = async (e) => {
     
     const tasksAsJSONString = await fileData.text();
-    DataHandlerState.clearTaskData();
+    taskDatabase.clearTaskData();
 
     JSON.parse(tasksAsJSONString).forEach((task) => {
-      DataHandlerState.addTaskLog(task);
+      taskDatabase.addTaskLog(task);
     })
 
-    const tasks = await DataHandlerState.getTasks();
+    const tasks = await taskDatabase.getTasks();
     setTasksState(tasks);
   } 
 
   const handleDownload = async (e) => {
-    await DataHandlerState.getDataAsJSON();
+    await taskDatabase.getDataAsJSON();
   }
 
   const handleGiveUpTask = async (e) => {
