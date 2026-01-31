@@ -1,7 +1,7 @@
 class DatabaseConnection {
     database = null;
 
-    isCompatable() {2
+    isCompatable() {
         return window.indexedDB;
     }
 
@@ -61,6 +61,40 @@ class DatabaseConnection {
             const playersObjectStore = this.database.createObjectStore("players", { keyPath: "createdAt"});
             playersObjectStore.createIndex("username", "username", { unique:false });
         }
+
+        if (oldVersion < 4) {
+            /** Note: Tasks existing without being associated without a player is 
+             * handled here as future versions, it is impossible for a task to exist
+             * without a player entry corresponding it. (due to App.jsx useEffect).
+             */
+            const transaction = event.target.transaction;
+            const playersObjectStore = transaction.objectStore("players");
+            const tasksObjectStore = transaction.objectStore("tasks");
+
+            const getTasksRequest = tasksObjectStore.getAll();
+
+            getTasksRequest.onsuccess = () => {
+                const tasks = getTasksRequest.result;
+                
+
+                tasks.forEach((task) => {
+                    const dateKey = task.createdAt.split('T')[0];
+
+                    const getPlayerRequest = playersObjectStore.get(dateKey);
+
+                    getPlayerRequest.onsuccess = () => {
+                        if (!getPlayerRequest.result) {
+                            const player = {
+                                username: "Unnamed",
+                                createdAt: dateKey
+                            };
+                            
+                            playersObjectStore.put(player);
+                        }
+                    };
+                })
+            }
+        }
     }
 
     constructor() {
@@ -69,7 +103,7 @@ class DatabaseConnection {
         } 
 
         this.ready = new Promise((resolve, reject) => {
-            const request = window.indexedDB.open("CheckpointDatabase", 3);
+            const request = window.indexedDB.open("CheckpointDatabase", 4);
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);
