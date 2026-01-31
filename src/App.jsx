@@ -56,10 +56,44 @@ function App() {
   return <div className="taskDisplay">
     <form action="" className="taskCreationMenu"
       onSubmit={handleSubmit}>
-      <label>
+      <div className="formInputs">
+        <label>
           Task Name:
           <input type="text" name="taskName"/>
-      </label>
+        </label>
+        <label>
+          Where did you pick to work and why:
+          <input type="text" name="taskName"/>
+        </label>
+        <label>
+          Where are your distractions:
+          <input type="text" name="taskName"/>
+        </label>
+        <label>
+          Is this task similar to what you did before:
+          <input type="text" name="taskName"/>
+        </label>
+        <label>
+          Is this being done early in the day:
+          <input type="text" name="taskName"/>
+        </label>
+        <label>
+          Why did you pick this task:
+          <input type="text" name="taskName"/>
+        </label>
+        <label>
+          How will you maximize efficiency:
+          <input type="text" name="taskName"/>
+        </label>
+        <label>
+          How long will this take:
+          <input type="text" name="taskName"/>
+        </label>
+        <label>
+          How much time for buffer:
+          <input type="text" name="taskName"/>
+        </label>
+      </div>
       <input type="submit" name="fileData"/>
     </form>
     <div className="rankList">
