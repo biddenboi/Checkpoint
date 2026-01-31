@@ -50,7 +50,7 @@ function Settings() {
                     <button type="button">Download</button>
                 </label>  
                 <label>
-                    Upload File Data:
+                    Upload Task Data:
                     <div>
                         <input type="file" />
                         <button type="button">Upload</button>
