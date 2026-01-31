@@ -26,6 +26,21 @@ class PlayerDatabase {
         })
     }
 
+    async getPlayer(createdAt) {
+        await this.databaseConnection.ready;
+       
+        return new Promise((resolve, reject) => {
+           const transaction = this.databaseConnection.database.transaction("players", "readonly");
+           const store = transaction.objectStore("players");
+       
+           const request = store.get(createdAt);
+       
+           request.onsuccess = () => resolve(request.result);
+           request.onerror = () => reject(request.error);
+           transaction.onerror = () => reject(transaction.error);
+         });
+    }
+
     async createPlayer(username) {
         await this.databaseConnection.ready;
 

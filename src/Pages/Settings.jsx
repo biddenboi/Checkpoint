@@ -1,5 +1,5 @@
 import './Settings.css'
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useEffect } from 'react';
 import { DatabaseConnectionContext } from '../App';
 import PlayerDatabase from "../network/PlayerDatabase";
 import TaskDatabase from '../network/TaskDatabase';
@@ -17,6 +17,20 @@ function Settings() {
 
     const [playerFileData, setPlayerFileData] = useState(null);
     const [taskFileData, setTaskFileData] = useState(null);
+    const [placeholderText, setPlaceholderText] = useState("");
+
+    useEffect(() => {
+        const updatePlaceholder = async () => {
+
+            const date = new Date().toISOString().split('T')[0];
+            const player = await playerDatabase.getPlayer(date);
+
+            setPlaceholderText(player.username);
+        }
+
+        updatePlaceholder();
+    }, [playerDatabase])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -70,7 +84,10 @@ function Settings() {
             <>
                 <label className="username-settings">
                     Username:
-                    <input type="text" placeholder='PLACEHOLDER' name="username"/>
+                    <input 
+                        type="text" 
+                        placeholder={placeholderText} 
+                        name="username"/>
                 </label>  
             </>
         )}

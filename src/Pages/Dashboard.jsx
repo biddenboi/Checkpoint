@@ -66,7 +66,7 @@ function Dashboard() {
           <input type="text" name="taskName" readOnly={inTaskSession}/>
         </label>
         <label>
-          Where did you pick to work and why:
+          Where did you pick to work:
           <input type="text" name="location" readOnly={inTaskSession}/>
         </label>
         <label>
@@ -90,11 +90,11 @@ function Dashboard() {
           <input type="text" name="efficiency" readOnly={inTaskSession}/>
         </label>
         <label>
-          How long will this take (minutes):
+          Estimated Duration(minutes):
           <input type="number" name="estimatedDuration" readOnly={inTaskSession}/>
         </label>
         <label>
-          How much time for buffer (minutes):
+          Estimated Buffer Time (minutes):
           <input type="number" name="estimatedBuffer" readOnly={inTaskSession}/>
         </label>
       </div>

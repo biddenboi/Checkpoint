@@ -118,7 +118,7 @@ class TaskDatabase {
             transaction.onerror = () => reject(transaction.error);
          })
     }  
-     async getTask(createdAt) {
+    async getTask(createdAt) {
         await this.databaseConnection.ready;
        
         return new Promise((resolve, reject) => {
