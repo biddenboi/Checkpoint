@@ -1,4 +1,5 @@
 import Dashboard from "./Pages/Dashboard";
+import Settings from "./Pages/Settings";
 import './App.css';
 import { useState } from 'react';
 
@@ -13,7 +14,7 @@ function App() {
     {
       currentPage == "dashboard" ?
       <Dashboard></Dashboard>
-      : <></>
+      : <Settings></Settings>
     }
   </>
 }
