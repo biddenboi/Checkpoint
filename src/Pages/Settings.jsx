@@ -32,18 +32,22 @@ function Settings() {
                 </label>  
             </>
         )}
+
+        <hr />
+
+        <button>Save Changes</button>
+
+        <br />
+
         {SettingsGroup("Data",
             <>
                 <label className="usernameSetting">
-                    Username:
+                    Download File Data:
                     <input type="text" placeholder='PLACEHOLDER' name="username"/>
                 </label>  
             </>
         )}
-        <hr />
-        <button>Save Changes</button>
     </form>
-        
 }
 
 function SettingsGroup(category, inputs) {
