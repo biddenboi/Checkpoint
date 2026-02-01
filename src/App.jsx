@@ -8,7 +8,7 @@ import PlayerDatabase from "./network/PlayerDatabase";
 export const DatabaseConnectionContext = createContext();
 
 function App() {
-  const databaseConnection = new DatabaseConnection();
+  const databaseConnection = useMemo(() => new DatabaseConnection(), []);
   const playerDatabase = useMemo(
     () => new PlayerDatabase(databaseConnection),
     [databaseConnection]
@@ -18,7 +18,11 @@ function App() {
 
     //FINISH PUSHING PLAYER DATA
     const createPlayer = async () => {
-      await playerDatabase.createPlayer("Unnamed");
+      const player = {
+        username: "unnamed",
+        createdAt: new Date().toISOString().split('T')[0]
+      }
+      await playerDatabase.createPlayer(player);
     }
 
     createPlayer();
