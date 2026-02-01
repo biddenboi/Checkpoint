@@ -41,24 +41,19 @@ class PlayerDatabase {
          });
     }
 
-    async createPlayer(username) {
+    async createPlayer(player) {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
             const transaction = this.databaseConnection.database.transaction(["players"], "readwrite");
             const players = transaction.objectStore("players");
 
-            const dateKey = new Date().toISOString().split('T')[0];
-            const request = players.get(dateKey);
+            const request = players.get(player.createdAt);
 
             request.onsuccess = (event) => {
                 const result = request.result;
 
                 if (result === undefined) {
-                    const player = {
-                        createdAt: dateKey,
-                        username: username
-                    }
                     players.add(player)
                 }else {
                     //player already exists
