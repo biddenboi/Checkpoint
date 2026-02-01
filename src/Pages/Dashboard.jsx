@@ -30,6 +30,7 @@ function Dashboard() {
   }, [taskDatabase]);
 
   useEffect(() => {
+    //creates map of players due to inability to directly use promise in html
     const loadPlayers = async () => {
       const data = await playerDatabase.getPlayers()
       const playerMap = {};

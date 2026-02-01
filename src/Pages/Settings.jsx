@@ -53,9 +53,6 @@ function Settings() {
         JSON.parse(tasksAsJSONString).forEach((task) => {
           taskDatabase.addTaskLog(task);
         })
-    
-        const tasks = await taskDatabase.getTasks();
-        setTasksState(tasks);
       } 
       const handleTaskDownload = async (e) => {
         await taskDatabase.getDataAsJSON();
@@ -65,14 +62,11 @@ function Settings() {
       const handlePlayerUpload = async (e) => {
     
         const playersAsJSONString = await playerFileData.text();
-        playerDatabase.clearTaskData();
+        playerDatabase.clearPlayerData();
     
         JSON.parse(playersAsJSONString).forEach((player) => {
-            playerDatabase.addTaskLog(player);
+            playerDatabase.putPlayer(player);
         })
-    
-        const players = await playerDatabase.getTasks();
-        setTasksState(players);
       } 
       const handlePlayerDownload = async (e) => {
         await playerDatabase.getDataAsJSON();
