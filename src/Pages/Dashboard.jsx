@@ -2,6 +2,7 @@ import './Dashboard.css'
 import { useState, useEffect, useContext, useMemo } from 'react'
 import { DatabaseConnectionContext } from '../App';
 import TaskDatabase from '../network/TaskDatabase.js';
+import PlayerDatabase from '../network/PlayerDatabase.js';
 
 function Dashboard() {
   const databaseConnection = useContext(DatabaseConnectionContext);
@@ -9,9 +10,13 @@ function Dashboard() {
     () => new TaskDatabase(databaseConnection)
     ,[databaseConnection]
   );
+  const playerDatabase = useMemo(
+    () => new PlayerDatabase(databaseConnection),
+    [databaseConnection]
+  );
 
   const [tasksState, setTasksState] = useState([]);
-  const [fileData, setFileData] = useState(null);
+  const [playerData, setPlayerData] = useState({});
   const [inTaskSession, setInTaskSession] = useState(false);
 
 
@@ -23,6 +28,21 @@ function Dashboard() {
     };
     loadTasks();
   }, [taskDatabase]);
+
+  useEffect(() => {
+    const loadPlayers = async () => {
+      const data = await playerDatabase.getPlayers()
+      const playerMap = {};
+      data.forEach(player => {
+        playerMap[player.createdAt] = player;
+      })
+
+      setPlayerData(playerMap);
+    }
+
+    loadPlayers();
+   
+  }, [playerDatabase])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -120,7 +140,7 @@ function Dashboard() {
           {
             tasksState.map((element, index) => (
               <tr key={element.createdAt}>
-                <td>{new Date(element.createdAt).toLocaleDateString()}</td>
+                <td>{playerData[element.createdAt.split('T')[0]]?.username || ""}</td>
                 <td>{element.taskName}</td>
               </tr>))
           }
