@@ -162,7 +162,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
       }
     </form>
     <div className="rank-list">
-      <table className="task-list">
+      <table className="rank-table">
         <thead>
           <tr>
             <th>Player Name</th>

@@ -1,24 +1,29 @@
 div.dashboard {
     display: grid;
-    height:100%;
+    height: 100%;
     grid-template-rows: repeat(20, 5%);
     grid-template-columns: repeat(10, 10%);
   }
   
-  table.task-list, table.task-list th, table.task-list td {
-    border: 1px solid rgb(0, 0, 0);
+  table.rank-table, table.rank-table th, table.rank-table td {
+    border: 0.1px solid rgb(206, 206, 206);
   }
   
   div.rank-list {
     display:flex;
     flex-direction: column;
   }
-  
-  table.task-list {
+
+  div.rank-list {
     display:block;
-    border-collapse: collapse;
     overflow-y:scroll;
-    height:100%;
+    border: 1px solid rgb(194, 194, 194);
+  }
+  
+  table.rank-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    max-height:100%;
     width:100%;
   }
   
@@ -47,6 +52,13 @@ div.dashboard {
     grid-column-end: span 4;
     grid-row-start: 3;
     grid-row-end: span 17;
+  }
+
+  table.rank-table thead {
+    position: sticky;
+    top: 0;
+    background: white;
+    border: 1px solid black;
   }
   
   div.form-inputs {
