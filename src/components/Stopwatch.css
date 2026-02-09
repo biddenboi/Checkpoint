@@ -1,0 +1,23 @@
+/* ========================================================================== */
+/* NEW FILE - Stopwatch.css - ADDED IN VERSION 0.88                          */
+/* Styles for the stopwatch timer display during task sessions               */
+/* ========================================================================== */
+
+.stopwatch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.stopwatch-time {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;  /* Monospace font like digital clock */
+  color: #333;
+}
+
+/* ========================================================================== */
+/* END OF NEW FILE                                                            */
+/* ========================================================================== */
