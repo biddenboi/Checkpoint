@@ -65,6 +65,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
       estimatedDuration: formData.get("estimatedDuration"),
       estimatedBuffer: formData.get("estimatedBuffer"),
       duration: duration,  
+      points: Math.floor(duration / 10000),
     }
 
     await taskDatabase.addTaskLog(task);
@@ -87,23 +88,6 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
     e.target.form.reset();
     setInTaskSession(false);
     setTaskStartTime(null);  // Reset start time when giving up
-  }
-
-  // double implementation of time formatting, should probably be consolidated into a utility function
-  const formatDuration = (ms) => {
-    if (!ms) return "—";  // Show em dash if no duration data
-    const totalSeconds = Math.floor(ms / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    if (hours > 0) {
-      return `${hours}h ${minutes}m ${seconds}s`;
-    } else if (minutes > 0) {
-      return `${minutes}m ${seconds}s`;
-    } else {
-      return `${seconds}s`;
-    }
   }
 
   return <div className="dashboard">
@@ -139,7 +123,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
           <input type="text" name="efficiency" readOnly={inTaskSession}/>
         </label>
         <label>
-          Estimated Duration(minutes):
+          Estimated Duration (minutes):
           <input type="number" name="estimatedDuration" readOnly={inTaskSession}/>
         </label>
         <label>
@@ -167,7 +151,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
           <tr>
             <th>Player Name</th>
             <th>Name</th>
-            <th>Duration</th>
+            <th>Points</th>
           </tr>
         </thead>
         <tbody>
@@ -176,7 +160,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
               <tr key={element.createdAt}>
                 <td>{playerData[element.createdAt.split('T')[0]]?.username || ""}</td>
                 <td>{element.taskName}</td>
-                <td>{formatDuration(element.duration)}</td>
+                <td>{element.points}</td>
               </tr>))
           }
         </tbody>

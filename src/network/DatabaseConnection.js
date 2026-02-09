@@ -117,6 +117,28 @@ class DatabaseConnection {
                 });
             };
         }
+
+        if (oldVersion < 6) {
+            const transaction = event.target.transaction;
+            const tasksObjectStore = transaction.objectStore("tasks");
+            
+            tasksObjectStore.createIndex("points", "points");
+
+            const getTasksRequest = tasksObjectStore.getAll();
+
+            getTasksRequest.onsuccess = () => {
+                const tasks = getTasksRequest.result;
+                
+                tasks.forEach((task) => {
+                    const duration = Number(task.duration) || 0;
+
+                    if (task.points === undefined) {
+                        task.points = Math.floor(task.duration / 10000); //miliseconds
+                        tasksObjectStore.put(task);
+                    }
+                });
+            };
+        }
     }
 
     constructor() {
@@ -126,7 +148,7 @@ class DatabaseConnection {
 
         this.ready = new Promise((resolve, reject) => {
 
-            const request = window.indexedDB.open("CheckpointDatabase", 5);
+            const request = window.indexedDB.open("CheckpointDatabase", 6);
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);
