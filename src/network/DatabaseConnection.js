@@ -96,13 +96,11 @@ class DatabaseConnection {
             }
         }
 
-        // ==================== NEW IN v0.88 ====================
-        // VERSION 5: Add duration tracking to tasks
         if (oldVersion < 5) {
             const transaction = event.target.transaction;
             const tasksObjectStore = transaction.objectStore("tasks");
             
-            // Create index for duration field (stores time in milliseconds)
+            //time in milliseconds
             tasksObjectStore.createIndex("duration", "duration");
 
             // Update all existing tasks to have duration = 0
@@ -113,13 +111,12 @@ class DatabaseConnection {
                 
                 tasks.forEach((task) => {
                     if (task.duration === undefined) {
-                        task.duration = 0;  // Set 0 for old tasks without duration data
+                        task.duration = 0;  
                         tasksObjectStore.put(task);
                     }
                 });
             };
         }
-        // ======================================================
     }
 
     constructor() {
@@ -128,10 +125,8 @@ class DatabaseConnection {
         } 
 
         this.ready = new Promise((resolve, reject) => {
-            // ============== CHANGED IN v0.88 ==============
-            // Updated version from 4 to 5
+
             const request = window.indexedDB.open("CheckpointDatabase", 5);
-            // ==============================================
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);

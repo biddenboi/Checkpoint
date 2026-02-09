@@ -69,11 +69,8 @@ div.dashboard {
     outline:none;
   }
 
-  /* ============== NEW IN v0.88 ============== */
-  /* Container for buttons + stopwatch during task session */
   div.task-session-container {
     display: flex;
-    flex-direction: column;  /* Stack buttons on top, stopwatch below */
+    flex-direction: column;  
     gap: 10px;
   }
-  /* ========================================== */

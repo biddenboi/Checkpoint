@@ -3,9 +3,7 @@ import { useState, useEffect, useContext, useMemo } from 'react'
 import { DatabaseConnectionContext } from '../App';
 import TaskDatabase from '../network/TaskDatabase.js';
 import PlayerDatabase from '../network/PlayerDatabase.js';
-// ============== NEW IN v0.88 ==============
 import Stopwatch from '../components/Stopwatch.jsx';
-// ==========================================
 
 function Dashboard() {
   const databaseConnection = useContext(DatabaseConnectionContext);
@@ -21,12 +19,7 @@ function Dashboard() {
   const [tasksState, setTasksState] = useState([]);
   const [playerData, setPlayerData] = useState({});
   const [inTaskSession, setInTaskSession] = useState(false);
-  // ============== NEW IN v0.88 ==============
-  // Stores the timestamp when user clicked "Start"
-  // Used to calculate duration when task completes
   const [taskStartTime, setTaskStartTime] = useState(null);
-  // ==========================================
-
 
    // Load tasks when component mounts
    useEffect(() => {
@@ -58,10 +51,7 @@ function Dashboard() {
 
     const formData = new FormData(e.target);
 
-    // ============== NEW IN v0.88 ==============
-    // Calculate how long the task took in milliseconds
     const duration = taskStartTime ? Date.now() - taskStartTime : 0;
-    // ==========================================
 
     const task = {
       createdAt: new Date().toISOString(),
@@ -74,46 +64,32 @@ function Dashboard() {
       efficiency: formData.get("efficiency"),
       estimatedDuration: formData.get("estimatedDuration"),
       estimatedBuffer: formData.get("estimatedBuffer"),
-      // ============== NEW IN v0.88 ==============
-      duration: duration,  // Save the calculated duration
-      // ==========================================
+      duration: duration,  
     }
 
     await taskDatabase.addTaskLog(task);
 
     // Reload tasks after adding  
     const tasks = await taskDatabase.getTasks();
-    setTasksState(tasks);
-    setInTaskSession(false);
-    // ============== NEW IN v0.88 ==============
-    setTaskStartTime(null);  // Reset the start time
-    // ==========================================
-
+    setTasksState(tasks); //updates task database and re-render
+    setInTaskSession(false); // Reset the start time
+    setTaskStartTime(null);  
     e.target.reset();
   }
 
-  // ============== NEW IN v0.88 ==============
-  // Handle clicking the "Start" button
-  // Records current time and locks form inputs
+
   const handleStartTask = () => {
-    setInTaskSession(true);
+    setInTaskSession(true); //changes visual menu
     setTaskStartTime(Date.now());  // Record when task started
   }
-  // ==========================================
 
   const handleGiveUpTask = async (e) => {
     e.target.form.reset();
     setInTaskSession(false);
-    // ============== NEW IN v0.88 ==============
     setTaskStartTime(null);  // Reset start time when giving up
-    // ==========================================
   }
 
-  // ============== NEW IN v0.88 ==============
-  /**
-   * Format duration from milliseconds to human-readable string
-   * Shows "1h 23m 45s" or "23m 45s" or "45s" depending on length
-   */
+  // double implementation of time formatting, should probably be consolidated into a utility function
   const formatDuration = (ms) => {
     if (!ms) return "—";  // Show em dash if no duration data
     const totalSeconds = Math.floor(ms / 1000);
@@ -129,7 +105,6 @@ function Dashboard() {
       return `${seconds}s`;
     }
   }
-  // ==========================================
 
   return <div className="dashboard">
     <form action="" className="task-creation-menu"
@@ -172,11 +147,7 @@ function Dashboard() {
           <input type="number" name="estimatedBuffer" readOnly={inTaskSession}/>
         </label>
       </div>
-      {/* ============== CHANGED IN v0.88 ============== */}
-      {/* Wrapped buttons in task-session-container      */}
-      {/* Added Stopwatch component below buttons        */}
-      {/* Changed onClick from inline to handleStartTask */}
-      {/* ============================================== */}
+      {/*[TODO] Consolidate alternative views into seperate react functions */}
       {
         inTaskSession ? 
         <div className="task-session-container">
@@ -185,10 +156,7 @@ function Dashboard() {
             <button type="button">Broke Focus</button>
             <button type="button" onClick={handleGiveUpTask}>Give Up</button>
           </div>
-          {/* ============== NEW IN v0.88 ============== */}
-          {/* Stopwatch displays elapsed time */}
-          <Stopwatch startTime={taskStartTime} />
-          {/* ========================================== */}
+          <Stopwatch startTime={taskStartTime} /> {/*[CHECK] stopwatch isn't a state why doesn't its data reset*/}
         </div>
         : <button onClick={handleStartTask} className="task-form-buttons" type="button">Start</button>
       }
@@ -199,9 +167,7 @@ function Dashboard() {
           <tr>
             <th>Player Name</th>
             <th>Name</th>
-            {/* ============== NEW IN v0.88 ============== */}
             <th>Duration</th>
-            {/* ========================================== */}
           </tr>
         </thead>
         <tbody>
@@ -210,10 +176,7 @@ function Dashboard() {
               <tr key={element.createdAt}>
                 <td>{playerData[element.createdAt.split('T')[0]]?.username || ""}</td>
                 <td>{element.taskName}</td>
-                {/* ============== NEW IN v0.88 ============== */}
-                {/* Display formatted duration */}
                 <td>{formatDuration(element.duration)}</td>
-                {/* ========================================== */}
               </tr>))
           }
         </tbody>
