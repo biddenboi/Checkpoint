@@ -39,11 +39,10 @@ function App() {
 
   const [currentPage, setCurrentPage] = useState("dashboard");
   return <>
-    <div className="navigation-bar">
+    <div className={inTaskSession ? "navigation-bar task-in-session" : "navigation-bar"}>
       <a onClick={() => setPage("dashboard")}>Dashboard</a>
       <a onClick={() => setPage("settings")}>Settings</a>
     </div>
-    <hr />
     <DatabaseConnectionContext.Provider value={databaseConnection}>
       {
         currentPage === "dashboard" ?

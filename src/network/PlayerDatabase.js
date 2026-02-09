@@ -19,7 +19,7 @@ class PlayerDatabase {
             }
 
             transaction.onerror = (event) => {
-                reject(transaction.error);
+                reject(transaction.error);''
             }
 
             return request;

@@ -1,11 +1,17 @@
 div.navigation-bar {
-  margin:10px 0px;
+  position:fixed;
+  width:100%;
+  padding:10px 0px;
   display:flex;
   justify-content: space-evenly;
-}
-
-div.navigation-bar > a {
   font-weight: 700;
   font-size:20px;
   cursor:pointer;
+  border-bottom: 1px solid gray;
+}
+
+
+div.navigation-bar.task-in-session {
+  color:gray;
+  cursor:not-allowed;
 }
