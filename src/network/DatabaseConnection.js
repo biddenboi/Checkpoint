@@ -117,7 +117,7 @@ class DatabaseConnection {
                 });
             };
         }
-
+        
         if (oldVersion < 6) {
             const transaction = event.target.transaction;
             const tasksObjectStore = transaction.objectStore("tasks");
@@ -133,7 +133,7 @@ class DatabaseConnection {
                     const duration = Number(task.duration) || 0;
 
                     if (task.points === undefined) {
-                        task.points = Math.floor(task.duration / 10000); //miliseconds
+                        task.points = Math.floor(duration / 10000); //miliseconds
                         tasksObjectStore.put(task);
                     }
                 });
@@ -148,6 +148,7 @@ class DatabaseConnection {
 
         this.ready = new Promise((resolve, reject) => {
 
+            //Reminder: when testing version updates change db version and version update if functions at same time
             const request = window.indexedDB.open("CheckpointDatabase", 6);
 
             request.onerror = (event) => {

@@ -156,7 +156,8 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
         </thead>
         <tbody>
           {
-            tasksState.map((element, index) => (
+            tasksState.sort((a, b) => b.points - a.points)
+              .map((element, index) => (
               <tr key={element.createdAt}>
                 <td>{playerData[element.createdAt.split('T')[0]]?.username || ""}</td>
                 <td>{element.taskName}</td>
