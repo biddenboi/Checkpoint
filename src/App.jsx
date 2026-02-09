@@ -8,11 +8,20 @@ import PlayerDatabase from "./network/PlayerDatabase";
 export const DatabaseConnectionContext = createContext();
 
 function App() {
+  const [inTaskSession, setInTaskSession] = useState(false);
+  
   const databaseConnection = useMemo(() => new DatabaseConnection(), []);
   const playerDatabase = useMemo(
     () => new PlayerDatabase(databaseConnection),
     [databaseConnection]
   );
+
+  //maybe improve the function name. Checks if task is in session and changes page if not.
+  const setPage = (page) => {
+    if (!inTaskSession) {
+      setCurrentPage(page);
+    }
+  }
 
   useEffect(() => {
 
@@ -31,14 +40,14 @@ function App() {
   const [currentPage, setCurrentPage] = useState("dashboard");
   return <>
     <div className="navigation-bar">
-      <a onClick={() => setCurrentPage("dashboard")}>Dashboard</a>
-      <a onClick={() => setCurrentPage("settings")}>Settings</a>
+      <a onClick={() => setPage("dashboard")}>Dashboard</a>
+      <a onClick={() => setPage("settings")}>Settings</a>
     </div>
     <hr />
     <DatabaseConnectionContext.Provider value={databaseConnection}>
       {
         currentPage === "dashboard" ?
-        <Dashboard></Dashboard>
+        <Dashboard inTaskSession={inTaskSession} setInTaskSession={setInTaskSession}></Dashboard>
         : <Settings></Settings>
       }
     </DatabaseConnectionContext.Provider>

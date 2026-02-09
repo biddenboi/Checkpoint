@@ -5,7 +5,8 @@ import TaskDatabase from '../network/TaskDatabase.js';
 import PlayerDatabase from '../network/PlayerDatabase.js';
 import Stopwatch from '../components/Stopwatch.jsx';
 
-function Dashboard() {
+//pass along whether a task session is currently active
+function Dashboard({ inTaskSession, setInTaskSession }) {
   const databaseConnection = useContext(DatabaseConnectionContext);
   const taskDatabase = useMemo(
     () => new TaskDatabase(databaseConnection)
@@ -18,7 +19,6 @@ function Dashboard() {
 
   const [tasksState, setTasksState] = useState([]);
   const [playerData, setPlayerData] = useState({});
-  const [inTaskSession, setInTaskSession] = useState(false);
   const [taskStartTime, setTaskStartTime] = useState(null);
 
    // Load tasks when component mounts
