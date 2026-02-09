@@ -19,7 +19,7 @@ function App() {
     //FINISH PUSHING PLAYER DATA
     const createPlayer = async () => {
       const player = {
-        username: "unnamed",
+        username: "Guest",
         createdAt: new Date().toISOString().split('T')[0]
       }
       await playerDatabase.createPlayer(player);
