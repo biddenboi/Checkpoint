@@ -27,7 +27,8 @@ import './Stopwatch.css';
  * @param {number} startTime - Timestamp (from Date.now()) when task started
 */
 
-function Stopwatch({ startTime }) {  const [elapsedTime, setElapsedTime] = useState(0);
+function Stopwatch({ startTime, durationPenalty }) {  
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
     //check if elapsedtime set already
@@ -63,6 +64,8 @@ function Stopwatch({ startTime }) {  const [elapsedTime, setElapsedTime] = useSt
   return (
     <div className="stopwatch">
       <span>{formatTime(elapsedTime)}</span>
+      <span>{Math.floor(elapsedTime / 10000) - durationPenalty + " points"}</span>
+      <span>{durationPenalty != 0 ? "(-" + durationPenalty + " focus penalty)" : ""}</span>
     </div>
   );
 }

@@ -158,8 +158,8 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
             <button type="button" onClick={handleBrokeFocus}>Broke Focus</button>
             <button type="button" onClick={handleGiveUpTask}>Give Up</button>
           </div>
-          <Stopwatch startTime={taskStartTime} /> 
-      
+          <Stopwatch startTime={taskStartTime} durationPenalty={durationPenalty}/> 
+          
         </div>
         : <button onClick={handleStartTask} className="task-form-buttons" type="button">Start</button>
       }
