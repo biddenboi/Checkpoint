@@ -95,6 +95,7 @@ class TaskDatabase {
             URL.revokeObjectURL(url); //revoke since blob urls don't get collected by garbage collector
         })
     }
+
     async getTasksFromRange(startDate, endDate) {
         await this.databaseConnection.ready;
      

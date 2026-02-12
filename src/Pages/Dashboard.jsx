@@ -16,20 +16,16 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
     () => new PlayerDatabase(databaseConnection),
     [databaseConnection]
   );
-
-  const [tasksState, setTasksState] = useState([]);
+  
+  //First fetch all the players, then use getTasksFromRange for each player and sum up the points. We discard the actual task object after we calculate total # of tasks so at most like 100 tasks in memory at a time before being reduced to a integer.
   const [playerData, setPlayerData] = useState({});
   const [taskStartTime, setTaskStartTime] = useState(null);
   const [durationPenalty, setDurationPenalty] = useState(null);
 
-   // Load tasks when component mounts
+   // Player updates are ignored from parameters list due to infrequency and that people will likely complete a task by time of first task completion.
    useEffect(() => {
-    const loadTasks = async () => {
-      const tasks = await taskDatabase.getTasks();
-      setTasksState(tasks);
-    };
-    loadTasks();
-  }, [taskDatabase]);
+    //empty
+  }, [inTaskSession]);
 
   useEffect(() => {
     //creates map of players due to inability to directly use promise in html
@@ -81,7 +77,6 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
 
     // Reload tasks after adding  
     const tasks = await taskDatabase.getTasks();
-    setTasksState(tasks); //updates task database and re-render
     setInTaskSession(false); // Reset the start time
     setTaskStartTime(null);  
     setDurationPenalty(null);
@@ -175,6 +170,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
         </thead>
         <tbody>
           {
+            /** 
             tasksState.sort((a, b) => b.points - a.points)
               .map((element, index) => (
               <tr key={element.createdAt}>
@@ -182,6 +178,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
                 <td>{element.taskName}</td>
                 <td>{element.points}</td>
               </tr>))
+              */
           }
         </tbody>
       </table>
