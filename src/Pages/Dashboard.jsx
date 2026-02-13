@@ -18,30 +18,45 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
   );
   
   //First fetch all the players, then use getTasksFromRange for each player and sum up the points. We discard the actual task object after we calculate total # of tasks so at most like 100 tasks in memory at a time before being reduced to a integer.
-  const [playerData, setPlayerData] = useState({});
+  const [playerPoints, setPlayerPoints] = useState([]);
   const [taskStartTime, setTaskStartTime] = useState(null);
   const [durationPenalty, setDurationPenalty] = useState(null);
 
-   // Player updates are ignored from parameters list due to infrequency and that people will likely complete a task by time of first task completion.
-   useEffect(() => {
-    //empty
-  }, [inTaskSession]);
-
-  useEffect(() => {
-    //creates map of players due to inability to directly use promise in html
+  useEffect(() => { //review method
+    //**loads all players** and adds task totals every call. 
+    //"async/await in forEach" / "the JavaScript forEach async trap."
+    //understand ISOString and Date
     const loadPlayers = async () => {
-      const data = await playerDatabase.getPlayers()
-      const playerMap = {};
-      data.forEach(player => {
-        playerMap[player.createdAt] = player;
-      })
+      const players = await playerDatabase.getPlayers()
 
-      setPlayerData(playerMap);
-    }
+    const playerPointsPromises = players.map(async (player) => {
+
+      const startDate = player.createdAt;
+      const endDate = (new Date(new Date(player.createdAt).getTime() + 86400000)).toISOString();
+
+      const tasks = await taskDatabase.getTasksFromRange(startDate, endDate);
+
+      let sum = 0;
+      tasks.forEach(task => {
+        sum += (task.points || 0);
+      });
+
+      return {
+        ...player,
+        points: sum
+      };
+    });
+
+    const results = await Promise.all(playerPointsPromises);
+
+    results.sort((a, b) => b.points - a.points);
+
+    setPlayerPoints(results);
+  };
 
     loadPlayers();
    
-  }, [playerDatabase])
+  }, [playerDatabase, inTaskSession])
 
   const getTaskDuration = () => {
     return taskStartTime ? Date.now() - taskStartTime : 0;
@@ -163,22 +178,20 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
       <table className="rank-table">
         <thead>
           <tr>
-            <th>Player Name</th>
-            <th>Name</th>
+            <th>Rank</th>
+            <th>Username</th>
             <th>Points</th>
           </tr>
         </thead>
         <tbody>
           {
-            /** 
-            tasksState.sort((a, b) => b.points - a.points)
-              .map((element, index) => (
+            //review this section
+            playerPoints.map((element, index) => (
               <tr key={element.createdAt}>
-                <td>{playerData[element.createdAt.split('T')[0]]?.username || ""}</td>
-                <td>{element.taskName}</td>
+                <td>{index + 1}</td>
+                <td>{element.username}</td>
                 <td>{element.points}</td>
               </tr>))
-              */
           }
         </tbody>
       </table>
