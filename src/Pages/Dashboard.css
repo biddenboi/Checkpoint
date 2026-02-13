@@ -39,7 +39,7 @@ div.dashboard {
   
   form.task-creation-menu {
     grid-column-start: 2;
-    grid-column-end: span 3;
+    grid-column-end: span 4;
     grid-row-start: 4;
     grid-row-end: span 3;
     display:flex;
@@ -48,10 +48,10 @@ div.dashboard {
   }
   
   div.rank-list {
-    grid-column-start: 6;
-    grid-column-end: span 4;
+    grid-column-start: 7;
+    grid-column-end: span 3;
     grid-row-start: 3;
-    grid-row-end: span 17;
+    grid-row-end: span 14;
   }
 
   table.rank-table thead {
