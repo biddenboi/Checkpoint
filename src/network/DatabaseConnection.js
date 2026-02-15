@@ -139,8 +139,47 @@ class DatabaseConnection {
                 });
             };
         }
-    }
 
+        if (oldVersion < 7) {
+            const transaction = event.target.transaction;
+            const tasksObjectStore = transaction.objectStore("tasks");
+            const playersObjectStore = transaction.objectStore("players");
+
+            const getTasksRequest = tasksObjectStore.getAll();
+            const getPlayersRequest = playersObjectStore.getAll();
+
+            getTasksRequest.onsuccess = () => {
+                const tasks = getTasksRequest.result;
+
+                /**dates set to 2000 as the check functions in that player-task
+                 * assignment first checks if task UTC > player UTC
+                 * to prevent double counting resulting from localhost checks
+                 * during timezone shifts
+                 */
+                
+                tasks.forEach((task) => {
+
+                    if (task.localCreatedAt === undefined) {
+                        task.localCreatedAt = new Date("2000-1-1T00:00:00");
+                        tasksObjectStore.put(task);
+                    }
+                });
+            };
+
+            getPlayersRequest.onsuccess = () => {
+                const players = getPlayersRequest.result;
+                
+                players.forEach((player) => {
+
+                    if (player.localCreatedAt === undefined) {
+                        player.localCreatedAt = new Date("2000-1-1T00:00:00");
+                        playersObjectStore.put(task);
+                    }
+                });
+            };
+        }
+    }
+    
     constructor() {
         if (!this.isCompatable()) {
             alert("Browser incompatability with IndexDB.");
