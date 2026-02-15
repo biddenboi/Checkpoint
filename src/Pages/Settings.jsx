@@ -39,7 +39,8 @@ function Settings() {
     
         const player = {
             username: formData.get("username"),
-            createdAt: new Date().toISOString().split('T')[0]
+            createdAt: new Date().toISOString().split('T')[0],
+            localCreatedAt: new Date().toLocaleString('sv').replace(' ', 'T') + '.000'
         }
         await playerDatabase.putPlayer(player);
     }

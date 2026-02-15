@@ -24,12 +24,12 @@ function App() {
   }
 
   useEffect(() => {
-
-    //FINISH PUSHING PLAYER DATA
+    //FINISH PUSHING PLAYER DATA  
     const createPlayer = async () => {
       const player = {
         username: "Guest",
-        createdAt: new Date().toISOString().split('T')[0]
+        createdAt: new Date().toISOString().split('T')[0],
+        localCreatedAt: new Date().toLocaleString('sv').replace(' ', 'T') + '.000'
       }
       await playerDatabase.createPlayer(player);
     }

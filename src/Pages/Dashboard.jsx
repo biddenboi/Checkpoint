@@ -71,10 +71,9 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
 
     const formData = new FormData(e.target);
 
-    const duration = getTaskDuration();
-
     const task = {
       createdAt: new Date().toISOString(),
+      localCreatedAt: new Date().toLocaleString('sv').replace(' ', 'T') + '.000',
       taskName: formData.get("taskName"),
       location: formData.get("location"),
       similarity: formData.get("similarity"),
@@ -90,8 +89,6 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
 
     await taskDatabase.addTaskLog(task);
 
-    // Reload tasks after adding  
-    const tasks = await taskDatabase.getTasks();
     setInTaskSession(false); // Reset the start time
     setTaskStartTime(null);  
     setDurationPenalty(null);
@@ -188,7 +185,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
             //review this section
             playerPoints.map((element, index) => (
               <tr key={element.createdAt}>
-                <td>{index + 1}</td>
+                <td>{"#" + (index + 1)}</td>
                 <td>{element.username}</td>
                 <td>{element.points}</td>
               </tr>))
