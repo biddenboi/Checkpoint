@@ -139,6 +139,7 @@ class DatabaseConnection {
                 });
             };
         }
+        
 
         if (oldVersion < 7) {
             const transaction = event.target.transaction;
@@ -156,15 +157,17 @@ class DatabaseConnection {
                  * to prevent double counting resulting from localhost checks
                  * during timezone shifts
                  */
+                 
                 
                 tasks.forEach((task) => {
 
                     if (task.localCreatedAt === undefined) {
-                        task.localCreatedAt = new Date("2000-1-1T00:00:00");
+                        task.localCreatedAt = new Date("2000-01-01T00:00:00");
                         tasksObjectStore.put(task);
                     }
                 });
             };
+            
 
             getPlayersRequest.onsuccess = () => {
                 const players = getPlayersRequest.result;
@@ -172,12 +175,13 @@ class DatabaseConnection {
                 players.forEach((player) => {
 
                     if (player.localCreatedAt === undefined) {
-                        player.localCreatedAt = new Date("2000-1-1T00:00:00");
-                        playersObjectStore.put(task);
+                        player.localCreatedAt = new Date("2000-01-01T00:00:00");
+                        playersObjectStore.put(player);
                     }
                 });
             };
         }
+        
     }
     
     constructor() {
@@ -188,7 +192,7 @@ class DatabaseConnection {
         this.ready = new Promise((resolve, reject) => {
 
             //Reminder: when testing version updates change db version and version update if functions at same time
-            const request = window.indexedDB.open("CheckpointDatabase", 6);
+            const request = window.indexedDB.open("CheckpointDatabase", 7);
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);
