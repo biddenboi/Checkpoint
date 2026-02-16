@@ -48,7 +48,8 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
 
         return {
           ...player,
-          points: sum
+          points: sum,
+          tasks: tasks
         };
       }
     );

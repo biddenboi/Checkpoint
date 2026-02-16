@@ -1,3 +1,58 @@
 div.profile {
     height:100%;
+    display:grid;
+
+    grid-template-columns: repeat(10, 10%);
+    grid-template-rows: repeat(20, 5%);
+}
+
+div.profile div.profile-banner {
+    border: 1px solid black;
+    
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    grid-column-start: 3;
+    grid-column-end: span 6;
+    grid-row-start:3;
+    grid-row-end: span 2;
+}
+
+div.profile-banner div {
+    font-size:15px;
+    font-weight:400;
+    display: flex;
+    flex-direction:column;
+}
+
+div.profile-banner div span:nth-child(2) {
+    font-size:30px;
+    font-weight:600;
+    margin-top: -7px;
+}
+
+div.task-history-display {
+    grid-column-start: 2;
+    grid-column-end: span 8;
+    grid-row-start:6;
+    grid-row-end: span 12;
+    display:block;
+    overflow-y:scroll;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+table.task-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    max-height:100%;
+    width:100%;
+    font-size: 17px;
+}
+
+table.task-table, table.task-table th, table.task-table td {
+    border: 0.1px solid rgb(0, 0, 0);
+}
+
+table.task-table tr > td {
+    padding: 5px 5px 5px 5px;
 }

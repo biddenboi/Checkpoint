@@ -66,6 +66,10 @@ div.dashboard {
     font-size:15px;
   }
 
+  table.rank-table tr > td {
+    padding: 5px 5px 5px 5px;
+  }
+
   table.rank-table tr > td:nth-child(1) {
     font-weight:600;
   }
@@ -100,3 +104,6 @@ div.dashboard {
     gap: 10px;
   }
 
+table.rank-table > Link {
+  color: black;
+}

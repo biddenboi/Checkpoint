@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import './Profile.css';
 
 function Profile() {
 //read through this code again when ur not tired
@@ -11,13 +12,53 @@ function Profile() {
     return null;
   }
 
-  return (
-    <div className="profile">
-      <p>{player.username}</p>
-      <p>{player.points}</p>
-      {/* access anything else from player */}
+  function getDateAsString(date) {
+    const hours = date.split(":")[0];
+    const minutes = date.split(":")[1];
+
+    return hours + ":" + minutes;
+  }
+
+  return <div className="profile">
+      <div className="profile-banner">
+        <div>
+            <span>Username:</span>
+            <span>{player.username}</span>
+        </div>
+        <div>
+            <span>Final Points:</span>
+            <span>{player.points}</span>
+        </div>
+        <div>
+            <span>Completions:</span>
+            <span>{player.tasks.length}</span>
+        </div>
+        
+      </div>
+      <div className="task-history-display">
+        <table className="task-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Duration</th>
+                    <th>Name</th>
+                    <th>Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {
+                        player.tasks.map((element, index) => (
+                        <tr key={element.createdAt}>
+                            <td>{getDateAsString(element.createdAt.split('T')[1].split('Z')[0])}</td>
+                            <td>{Math.floor(element.duration / 60000) + "m"}</td>
+                            <td>{element.taskName}</td>
+                            <td>{element.points}</td>
+                        </tr>))
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-  );
 }
 
 export default Profile;
