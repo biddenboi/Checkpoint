@@ -4,9 +4,11 @@ import { DatabaseConnectionContext } from '../../App.jsx';
 import TaskDatabase from '../../network/Database/TaskDatabase.js';
 import PlayerDatabase from '../../network/Database/PlayerDatabase.js';
 import Stopwatch from '../../components/Stopwatch/Stopwatch.jsx';
+import { useNavigate, Link } from 'react-router-dom';
 
 //pass along whether a task session is currently active
 function Dashboard({ inTaskSession, setInTaskSession }) {
+
   const databaseConnection = useContext(DatabaseConnectionContext);
   const taskDatabase = useMemo(
     () => new TaskDatabase(databaseConnection)
@@ -189,7 +191,12 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
             playerPoints.map((element, index) => (
               <tr key={element.createdAt}>
                 <td>{"#" + (index + 1)}</td>
-                <td><a>{element.username}</a></td>
+                <td><Link 
+                  to="/profile"
+                  state={{ player: element }}
+                  >
+                  {element.username}
+                  </Link></td>
                 <td>{element.points}</td>
               </tr>))
           }

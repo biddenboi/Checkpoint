@@ -2,6 +2,7 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import Events from "./Pages/Events/Events";
 import Settings from "./Pages/Settings/Settings";
 import Journal from "./Pages/Journal/Journal";
+import Profile from "./Pages/Profile/Profile";
 import Shop from "./Pages/Shop/Shop";
 
 import './App.css';
@@ -13,7 +14,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 export const DatabaseConnectionContext = createContext();
 
 function App() {
-  const nav = useNavigate();
+  const nav = useNavigate(); 
 
   const [inTaskSession, setInTaskSession] = useState(false);
   
@@ -61,6 +62,7 @@ function App() {
           <Route path='/shop'element={<Shop></Shop>}/>
           <Route path='/journal'element={<Journal></Journal>}/>
           <Route path='/settings'element={<Settings></Settings>}/>
+          <Route path='/profile'element={<Profile></Profile>}/>
         </Routes>
     </DatabaseConnectionContext.Provider>
   </>
