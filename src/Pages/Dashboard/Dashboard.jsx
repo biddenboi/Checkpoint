@@ -1,9 +1,9 @@
 import './Dashboard.css'
 import { useState, useEffect, useContext, useMemo } from 'react'
-import { DatabaseConnectionContext } from '../App';
-import TaskDatabase from '../network/TaskDatabase.js';
-import PlayerDatabase from '../network/PlayerDatabase.js';
-import Stopwatch from '../components/Stopwatch.jsx';
+import { DatabaseConnectionContext } from '../../App.jsx';
+import TaskDatabase from '../../network/Database/TaskDatabase.js';
+import PlayerDatabase from '../../network/Database/PlayerDatabase.js';
+import Stopwatch from '../../components/Stopwatch/Stopwatch.jsx';
 
 //pass along whether a task session is currently active
 function Dashboard({ inTaskSession, setInTaskSession }) {

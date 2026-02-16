@@ -1,8 +1,8 @@
 import './Settings.css'
 import { useContext, useMemo, useState, useEffect } from 'react';
-import { DatabaseConnectionContext } from '../App';
-import PlayerDatabase from "../network/PlayerDatabase";
-import TaskDatabase from '../network/TaskDatabase';
+import { DatabaseConnectionContext } from '../../App';
+import PlayerDatabase from "../../network/Database/PlayerDatabase";
+import TaskDatabase from '../../network/Database/TaskDatabase';
 
 function Settings() {
     const databaseConnection = useContext(DatabaseConnectionContext);
