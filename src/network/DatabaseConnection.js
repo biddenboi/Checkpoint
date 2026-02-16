@@ -140,7 +140,7 @@ class DatabaseConnection {
             };
         }
         
-
+        
         if (oldVersion < 7) {
             const transaction = event.target.transaction;
             const tasksObjectStore = transaction.objectStore("tasks");
@@ -162,7 +162,7 @@ class DatabaseConnection {
                 tasks.forEach((task) => {
 
                     if (task.localCreatedAt === undefined) {
-                        task.localCreatedAt = new Date("2000-01-01T00:00:00");
+                        task.localCreatedAt = task.createdAt;
                         tasksObjectStore.put(task);
                     }
                 });
@@ -175,12 +175,12 @@ class DatabaseConnection {
                 players.forEach((player) => {
 
                     if (player.localCreatedAt === undefined) {
-                        player.localCreatedAt = new Date("2000-01-01T00:00:00");
+                        player.localCreatedAt = player.createdAt;
                         playersObjectStore.put(player);
                     }
                 });
             };
-        }
+        } 
         
     }
     

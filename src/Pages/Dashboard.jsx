@@ -31,8 +31,8 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
 
     const playerPointsPromises = players.map(async (player) => {
 
-      const startDate = player.createdAt;
-      const endDate = (new Date(new Date(player.createdAt).getTime() + 86400000)).toISOString();
+      const startDate = player.localCreatedAt;
+      const endDate = (new Date(new Date(player.localCreatedAt).getTime() + 86400000)).toISOString();
 
       const tasks = await taskDatabase.getTasksFromRange(startDate, endDate);
 

@@ -26,14 +26,14 @@ class PlayerDatabase {
         })
     }
 
-    async getPlayer(createdAt) {
+    async getPlayer(localCreatedAt) {
         await this.databaseConnection.ready;
        
         return new Promise((resolve, reject) => {
            const transaction = this.databaseConnection.database.transaction("players", "readonly");
            const store = transaction.objectStore("players");
        
-           const request = store.get(createdAt);
+           const request = store.get(localCreatedAt);
        
            request.onsuccess = () => resolve(request.result);
            request.onerror = () => reject(request.error);
@@ -48,7 +48,7 @@ class PlayerDatabase {
             const transaction = this.databaseConnection.database.transaction(["players"], "readwrite");
             const players = transaction.objectStore("players");
 
-            const request = players.get(player.createdAt);
+            const request = players.get(player.localCreatedAt);
 
             request.onsuccess = (event) => {
                 const result = request.result;
@@ -110,7 +110,7 @@ class PlayerDatabase {
 
     async getDataAsJSON() {
         await this.databaseConnection.ready;
-
+ 
         return new Promise(async (resolve, reject) => {
             //so what this does is basically convert the data into a string, blob gives the data a location which is in url, and then we create an attribute with download using HTML 5 download method
             const data = await this.getPlayers();

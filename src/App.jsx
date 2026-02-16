@@ -28,8 +28,8 @@ function App() {
     const createPlayer = async () => {
       const player = {
         username: "Guest",
-        createdAt: new Date().toISOString().split('T')[0],
-        localCreatedAt: new Date().toLocaleString('sv').replace(' ', 'T') + '.000'
+        createdAt: new Date().toISOString(),
+        localCreatedAt: new Date().toLocaleString('sv').split('T')[0]
       }
       await playerDatabase.createPlayer(player);
     }
