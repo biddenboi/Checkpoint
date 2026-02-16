@@ -29,7 +29,7 @@ function App() {
       const player = {
         username: "Guest",
         createdAt: new Date().toISOString(),
-        localCreatedAt: new Date().toLocaleString('sv').split('T')[0]
+        localCreatedAt: new Date().toLocaleString('sv').split(' ')[0]
       }
       await playerDatabase.createPlayer(player);
     }
