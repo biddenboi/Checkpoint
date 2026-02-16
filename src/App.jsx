@@ -8,37 +8,26 @@ import './App.css';
 import { useState, createContext, useEffect, useMemo } from 'react';
 import DatabaseConnection from "./network/DatabaseConnection";
 import PlayerDatabase from "./network/Database/PlayerDatabase";
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 export const DatabaseConnectionContext = createContext();
 
 function App() {
+  const nav = useNavigate();
+
   const [inTaskSession, setInTaskSession] = useState(false);
-  const [currentPage, setCurrentPage] = useState("dashboard");
   
   const databaseConnection = useMemo(() => new DatabaseConnection(), []);
   const playerDatabase = useMemo(
     () => new PlayerDatabase(databaseConnection),
     [databaseConnection]
   );
+  
 
   //maybe improve the function name. Checks if task is in session and changes page if not.
-  const setPage = (page) => {
+  const navigate = (route) => {
     if (!inTaskSession) {
-      setCurrentPage(page);
-    }
-  }
-
-  const loadPage = () => {
-    if (currentPage === "dashboard") {
-      return <Dashboard inTaskSession={inTaskSession} setInTaskSession={setInTaskSession}></Dashboard>
-    } else if (currentPage === "events") {
-      return <Events></Events>
-    } else if (currentPage === "shop") {
-      return <Shop></Shop>
-    } else if (currentPage === "journal") {
-      return <Journal></Journal>
-    } else {
-      return <Settings></Settings>
+      nav(route);
     }
   }
 
@@ -59,14 +48,20 @@ function App() {
   
   return <>
     <div className={inTaskSession ? "navigation-bar task-in-session" : "navigation-bar"}>
-      <a onClick={() => setPage("dashboard")}>Dashboard</a>
-      <a onClick={() => setPage("events")}>Events</a>
-      <a onClick={() => setPage("shop")}>Shop</a>
-      <a onClick={() => setPage("journal")}>Journal</a>
-      <a onClick={() => setPage("settings")}>Settings</a>
+      <a onClick={() => navigate("/")}>Dashboard</a>
+      <a onClick={() => navigate("/events")}>Events</a>
+      <a onClick={() => navigate("/shop")}>Shop</a>
+      <a onClick={() => navigate("/journal")}>Journal</a>
+      <a onClick={() => navigate("/settings")}>Settings</a>
     </div>
     <DatabaseConnectionContext.Provider value={databaseConnection}>
-      {loadPage()}
+        <Routes>
+          <Route path='/' element={<Dashboard inTaskSession={inTaskSession} setInTaskSession={setInTaskSession}></Dashboard>}/>
+          <Route path='/events'element={<Events></Events>}/>
+          <Route path='/shop'element={<Shop></Shop>}/>
+          <Route path='/journal'element={<Journal></Journal>}/>
+          <Route path='/settings'element={<Settings></Settings>}/>
+        </Routes>
     </DatabaseConnectionContext.Provider>
   </>
 }
