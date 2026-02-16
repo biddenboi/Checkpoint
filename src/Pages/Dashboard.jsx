@@ -29,23 +29,27 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
     const loadPlayers = async () => {
       const players = await playerDatabase.getPlayers()
 
-    const playerPointsPromises = players.map(async (player) => {
+      const playerPointsPromises = players.map(async (player) => {
+        const lastMidnight = new Date(new Date().toLocaleString('sv').split(' ')[0] + "T00:00:00");
+        const currentTime = new Date(new Date().toLocaleString('sv').replace(' ', "T"));
+        const msElapsedSinceStart = currentTime - lastMidnight;
 
-      const startDate = player.localCreatedAt;
-      const endDate = (new Date(new Date(player.localCreatedAt).getTime() + 86400000)).toISOString();
+        const startDate = player.localCreatedAt;
+        const endDate = (new Date(new Date(player.localCreatedAt).getTime() + msElapsedSinceStart)).toISOString();
 
-      const tasks = await taskDatabase.getTasksFromRange(startDate, endDate);
+        const tasks = await taskDatabase.getTasksFromRange(startDate, endDate);
 
-      let sum = 0;
-      tasks.forEach(task => {
-        sum += (task.points || 0);
-      });
+        let sum = 0;
+        tasks.forEach(task => {
+          sum += (task.points || 0);
+        });
 
-      return {
-        ...player,
-        points: sum
-      };
-    });
+        return {
+          ...player,
+          points: sum
+        };
+      }
+    );
 
     const results = await Promise.all(playerPointsPromises);
 
