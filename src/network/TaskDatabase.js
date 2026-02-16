@@ -9,8 +9,8 @@ class TaskDatabase {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction(["tasks"], "readwrite");
-            const tasks = transaction.objectStore("tasks");
+            const transaction = this.databaseConnection.database.transaction(["taskObjectStore"], "readwrite");
+            const tasks = transaction.objectStore("taskObjectStore");
 
             const objectStoreRequest = tasks.clear();
 
@@ -24,14 +24,14 @@ class TaskDatabase {
         })
     }
 
-    //createdAt, username, taskName, taskDescription, taskDifficulty
+    //localCreatedAt, username, taskName, taskDescription, taskDifficulty
     async addTaskLog(task) {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction(["tasks"], "readwrite");
+            const transaction = this.databaseConnection.database.transaction(["taskObjectStore"], "readwrite");
         
-            const tasks = transaction.objectStore("tasks");
+            const tasks = transaction.objectStore("taskObjectStore");
             const request = tasks.put(task);  
             
             transaction.oncomplete = (event) => {
@@ -45,13 +45,13 @@ class TaskDatabase {
             return request;
         })
     }
-    async removeTaskLog(createdAt) {
+    async removeTaskLog(localCreatedAt) {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction(["tasks"], "readwrite");
-            const tasksObjectStore = transaction.objectStore("tasks");
-            const request = tasksObjectStore.delete(createdAt);
+            const transaction = this.databaseConnection.database.transaction(["taskObjectStore"], "readwrite");
+            const tasksObjectStore = transaction.objectStore("taskObjectStore");
+            const request = tasksObjectStore.delete(localCreatedAt);
 
             transaction.oncomplete = (event) => {
                 resolve();
@@ -66,8 +66,8 @@ class TaskDatabase {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction("tasks", "readonly");
-            const tasks = transaction.objectStore("tasks");
+            const transaction = this.databaseConnection.database.transaction("taskObjectStore", "readonly");
+            const tasks = transaction.objectStore("taskObjectStore");
 
             const request = tasks.getAll();
 
@@ -100,8 +100,8 @@ class TaskDatabase {
         await this.databaseConnection.ready;
      
          return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction("tasks", "readonly");
-            const tasks = transaction.objectStore("tasks");
+            const transaction = this.databaseConnection.database.transaction("taskObjectStore", "readonly");
+            const tasks = transaction.objectStore("taskObjectStore");
             const dateRange = IDBKeyRange.bound(startDate, endDate, false, false);
             const results = [];
      
@@ -119,14 +119,14 @@ class TaskDatabase {
             transaction.onerror = () => reject(transaction.error);
          })
     }  
-    async getTask(createdAt) {
+    async getTask(localCreatedAt) {
         await this.databaseConnection.ready;
        
         return new Promise((resolve, reject) => {
-           const transaction = this.databaseConnection.database.transaction("tasks", "readonly");
-           const store = transaction.objectStore("tasks");
+           const transaction = this.databaseConnection.database.transaction("taskObjectStore", "readonly");
+           const store = transaction.objectStore("taskObjectStore");
        
-           const request = store.get(createdAt);
+           const request = store.get(localCreatedAt);
        
            request.onsuccess = () => resolve(request.result);
            request.onerror = () => reject(request.error);

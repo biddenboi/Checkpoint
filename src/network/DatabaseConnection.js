@@ -61,7 +61,6 @@ class DatabaseConnection {
             const playersObjectStore = this.database.createObjectStore("players", { keyPath: "createdAt"});
             playersObjectStore.createIndex("username", "username", { unique:false });
         }
-
         if (oldVersion < 4) {
             /** Note: Tasks existing without being associated without a player is 
              * handled here as future versions, it is impossible for a task to exist
@@ -95,7 +94,6 @@ class DatabaseConnection {
                 })
             }
         }
-
         if (oldVersion < 5) {
             const transaction = event.target.transaction;
             const tasksObjectStore = transaction.objectStore("tasks");
@@ -117,7 +115,6 @@ class DatabaseConnection {
                 });
             };
         }
-        
         if (oldVersion < 6) {
             const transaction = event.target.transaction;
             const tasksObjectStore = transaction.objectStore("tasks");
@@ -139,8 +136,6 @@ class DatabaseConnection {
                 });
             };
         }
-        
-        
         if (oldVersion < 7) {
             const transaction = event.target.transaction;
             const tasksObjectStore = transaction.objectStore("tasks");
@@ -175,13 +170,65 @@ class DatabaseConnection {
                 players.forEach((player) => {
 
                     if (player.localCreatedAt === undefined) {
-                        player.localCreatedAt = player.createdAt;
+                        player.localCreatedAt = player.createdAt.split("Z")[0];
                         playersObjectStore.put(player);
                     }
                 });
             };
         } 
         
+        if (oldVersion < 8) {
+            const transaction = event.target.transaction;
+            
+            const newPlayerStore = this.database.createObjectStore("playerObjectStore", { keyPath: "localCreatedAt" });
+            newPlayerStore.createIndex("username","username", {unique: false});
+            newPlayerStore.createIndex("createdAt","createdAt", {unique: false});
+
+            const newTaskStore = this.database.createObjectStore("taskObjectStore", { keyPath: "localCreatedAt" });
+            newTaskStore.createIndex("createdAt","createdAt", {unique: false});
+            newTaskStore.createIndex("distractions","distractions", {unique: false});
+            newTaskStore.createIndex("duration","duration", {unique: false});
+            newTaskStore.createIndex("efficiency","efficiency", {unique: false});
+            newTaskStore.createIndex("estimatedBuffer","estimatedBuffer", {unique: false});
+            newTaskStore.createIndex("estimatedDuration","estimatedDuration", {unique: false});
+            newTaskStore.createIndex("location","location", {unique: false});
+            newTaskStore.createIndex("points","points", {unique: false});
+            newTaskStore.createIndex("reasonToSelect","reasonToSelect", {unique: false});
+            newTaskStore.createIndex("similarity","similarity", {unique: false});
+            newTaskStore.createIndex("taskName","taskName", {unique: false});
+            newTaskStore.createIndex("timeOfStart","timeofStart", {unique: false});
+
+            if (this.database.objectStoreNames.contains("players")) {
+                const oldPlayerStore = transaction.objectStore("players");
+                const getAllPlayerReq = oldPlayerStore.getAll();
+
+                //same data, it is just reinput to change the key.
+                getAllPlayerReq.onsuccess = () => {
+                    for (const p of getAllPlayerReq.result) {
+                        newPlayerStore.put({
+                            ...p,
+                        })
+                    }
+                }
+            }
+
+            if (this.database.objectStoreNames.contains("tasks")) {
+                const oldTasksStore = transaction.objectStore("tasks");
+                const getAllTasksReq = oldTasksStore.getAll();
+
+                //same data, it is just reinput to change the key.
+                getAllTasksReq.onsuccess = () => {
+                    for (const p of getAllTasksReq.result) {
+                        newTaskStore.put({
+                            ...p,
+                        })
+                    }
+                }
+            }
+
+            this.database.deleteObjectStore("players");
+            this.database.deleteObjectStore("tasks");
+        }
     }
     
     constructor() {
@@ -192,7 +239,7 @@ class DatabaseConnection {
         this.ready = new Promise((resolve, reject) => {
 
             //Reminder: when testing version updates change db version and version update if functions at same time
-            const request = window.indexedDB.open("CheckpointDatabase", 7);
+            const request = window.indexedDB.open("CheckpointDatabase", 8);
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);

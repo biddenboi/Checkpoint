@@ -9,9 +9,9 @@ class PlayerDatabase {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction(["players"], "readwrite");
+            const transaction = this.databaseConnection.database.transaction(["playerObjectStore"], "readwrite");
 
-            const players = transaction.objectStore("players");
+            const players = transaction.objectStore("playerObjectStore");
             const request = players.put(player);
 
             transaction.oncomplete = (event) => {
@@ -19,7 +19,7 @@ class PlayerDatabase {
             }
 
             transaction.onerror = (event) => {
-                reject(transaction.error);''
+                reject(transaction.error);
             }
 
             return request;
@@ -30,8 +30,8 @@ class PlayerDatabase {
         await this.databaseConnection.ready;
        
         return new Promise((resolve, reject) => {
-           const transaction = this.databaseConnection.database.transaction("players", "readonly");
-           const store = transaction.objectStore("players");
+           const transaction = this.databaseConnection.database.transaction("playerObjectStore", "readonly");
+           const store = transaction.objectStore("playerObjectStore");
        
            const request = store.get(localCreatedAt);
        
@@ -45,8 +45,8 @@ class PlayerDatabase {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction(["players"], "readwrite");
-            const players = transaction.objectStore("players");
+            const transaction = this.databaseConnection.database.transaction(["playerObjectStore"], "readwrite");
+            const players = transaction.objectStore("playerObjectStore");
 
             const request = players.get(player.localCreatedAt);
 
@@ -78,8 +78,8 @@ class PlayerDatabase {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction(["players"], "readwrite");
-            const players = transaction.objectStore("players");
+            const transaction = this.databaseConnection.database.transaction(["playerObjectStore"], "readwrite");
+            const players = transaction.objectStore("playerObjectStore");
 
             const objectStoreRequest = players.clear();
 
@@ -97,8 +97,8 @@ class PlayerDatabase {
         await this.databaseConnection.ready;
 
         return new Promise((resolve, reject) => {
-            const transaction = this.databaseConnection.database.transaction("players", "readonly");
-            const players = transaction.objectStore("players");
+            const transaction = this.databaseConnection.database.transaction("playerObjectStore", "readonly");
+            const players = transaction.objectStore("playerObjectStore");
 
             const request = players.getAll();
 
