@@ -25,6 +25,7 @@ div.dashboard {
     border-spacing: 0;
     max-height:100%;
     width:100%;
+    font-size: 17px;
   }
   
   div.task-form-buttons {
@@ -58,7 +59,15 @@ div.dashboard {
     position: sticky;
     top: 0;
     background: white;
+    font-weight:900;
+  }
 
+  table.rank-table tbody {
+    font-size:15px;
+  }
+
+  table.rank-table tr > td:nth-child(2) {
+    font-weight:600;
   }
   
   div.form-inputs {

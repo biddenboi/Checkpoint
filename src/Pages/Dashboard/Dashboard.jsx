@@ -186,11 +186,10 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
         </thead>
         <tbody>
           {
-            //review this section
             playerPoints.map((element, index) => (
               <tr key={element.createdAt}>
                 <td>{"#" + (index + 1)}</td>
-                <td>{element.username}</td>
+                <td><a>{element.username}</a></td>
                 <td>{element.points}</td>
               </tr>))
           }
