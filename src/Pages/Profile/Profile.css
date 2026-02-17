@@ -8,17 +8,22 @@ div.profile {
 
 div.profile div.profile-banner {
     border: 1px solid black;
-    
-    display:flex;
-    align-items: center;
-    justify-content: space-around;
     grid-column-start: 3;
     grid-column-end: span 6;
     grid-row-start:3;
-    grid-row-end: span 2;
+    grid-row-end: span 3;
 }
 
-div.profile-banner div {
+
+div.profile div.profile-banner div:nth-child(1) {
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    height:50%;
+}
+
+div.profile-banner div div {
+    
     font-size:15px;
     font-weight:400;
     display: flex;
@@ -34,8 +39,8 @@ div.profile-banner div span:nth-child(2) {
 div.task-history-display {
     grid-column-start: 2;
     grid-column-end: span 8;
-    grid-row-start:6;
-    grid-row-end: span 12;
+    grid-row-start:7;
+    grid-row-end: span 13;
     display:block;
     overflow-y:scroll;
     border: 1px solid rgb(0, 0, 0);
@@ -55,4 +60,13 @@ table.task-table, table.task-table th, table.task-table td {
 
 table.task-table tr > td {
     padding: 5px 5px 5px 5px;
+}
+
+div.profile-banner > div.description-subsection {
+    height:40%;
+    padding:20px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
 }

@@ -33,6 +33,11 @@ class DatabaseConnection {
         newTaskStore.createIndex("taskName", "taskName", { unique: false });
         newTaskStore.createIndex("timeOfStart", "timeOfStart", { unique: false });
     }
+
+    if (oldVersion < 9) {
+        const playerStore = transaction.objectStore("playerObjectStore");
+        playerStore.createIndex("description", "description", { unique: false });
+    }
 }
     constructor() {
         if (!this.isCompatable()) {
@@ -42,7 +47,7 @@ class DatabaseConnection {
         this.ready = new Promise((resolve, reject) => {
 
             //Reminder: when testing version updates change db version and version update if functions at same time
-            const request = window.indexedDB.open("CheckpointDatabase", 8);
+            const request = window.indexedDB.open("CheckpointDatabase", 9);
 
             request.onerror = (event) => {
                 console.error(`Database error: ${event.target.error?.message}`);

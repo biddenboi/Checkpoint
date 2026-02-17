@@ -21,19 +21,23 @@ function Profile() {
 
   return <div className="profile">
       <div className="profile-banner">
-        <div>
-            <span>Username:</span>
-            <span>{player.username}</span>
-        </div>
-        <div>
-            <span>Final Points:</span>
-            <span>{player.points}</span>
-        </div>
-        <div>
-            <span>Completions:</span>
-            <span>{player.tasks.length}</span>
-        </div>
-        
+            <div className="stats-subsection">
+                <div>
+                    <span>Username:</span>
+                    <span>{player.username}</span>
+                </div>
+                <div>
+                    <span>Final Points:</span>
+                    <span>{player.points}</span>
+                </div>
+                <div>
+                    <span>Completions:</span>
+                    <span>{player.tasks.length}</span>
+                </div>
+            </div>
+            <div className="description-subsection">
+                <span>{player.description ? '"'+player.description+'"' : "No Bio."}</span>
+            </div>
       </div>
       <div className="task-history-display">
         <table className="task-table">
@@ -49,7 +53,7 @@ function Profile() {
                     {
                         player.tasks.map((element, index) => (
                         <tr key={element.createdAt}>
-                            <td>{getDateAsString(element.createdAt.split('T')[1].split('Z')[0])}</td>
+                            <td>{getDateAsString(element.localCreatedAt.split('T')[1].split('Z')[0])}</td>
                             <td>{Math.floor(element.duration / 60000) + "m"}</td>
                             <td>{element.taskName}</td>
                             <td>{element.points}</td>

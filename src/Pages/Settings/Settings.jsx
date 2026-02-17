@@ -17,7 +17,8 @@ function Settings() {
 
     const [playerFileData, setPlayerFileData] = useState(null);
     const [taskFileData, setTaskFileData] = useState(null);
-    const [placeholderText, setPlaceholderText] = useState("");
+    const [usernamePlaceholderText, setUsernamePlaceholderText] = useState("");
+    const [descriptionPlaceholderText, setDescriptionPlaceholderText] = useState("");
 
     useEffect(() => {
         const updatePlaceholder = async () => {
@@ -25,7 +26,8 @@ function Settings() {
             const date = new Date().toISOString().split('T')[0];
             const player = await playerDatabase.getPlayer(date);
 
-            setPlaceholderText(player.username);
+            setUsernamePlaceholderText(player.username);
+            setDescriptionPlaceholderText(player.description);
         }
 
         updatePlaceholder();
@@ -34,15 +36,18 @@ function Settings() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const date = new Date().toISOString().split('T')[0];
+            const player = await playerDatabase.getPlayer(date);
     
         const formData = new FormData(e.target);
     
-        const player = {
-            username: formData.get("username"),
+        const newPlayer = {
+            username: formData.get("username") == "" ? player.username : formData.get("username"),
             createdAt: new Date().toISOString(),
-            localCreatedAt: new Date().toLocaleString('sv').split(' ')[0]
+            localCreatedAt: new Date().toLocaleString('sv').split(' ')[0],
+            description: formData.get("description") == "" ? player.description : formData.get("description")
         }
-        await playerDatabase.putPlayer(player);
+        await playerDatabase.putPlayer(newPlayer);
     }
 
     //task data interaction methods
@@ -81,8 +86,15 @@ function Settings() {
                     Username:
                     <input 
                         type="text" 
-                        placeholder={placeholderText} 
+                        placeholder={usernamePlaceholderText} 
                         name="username"/>
+                </label>  
+                <label className="description-settings">
+                    Description:
+                    <input 
+                        type="text" 
+                        placeholder={descriptionPlaceholderText} 
+                        name="description"/>
                 </label>  
             </>
         )}
