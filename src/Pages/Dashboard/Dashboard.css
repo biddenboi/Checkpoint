@@ -41,11 +41,12 @@ div.dashboard {
   form.task-creation-menu {
     grid-column-start: 2;
     grid-column-end: span 4;
-    grid-row-start: 6;
-    grid-row-end: span 3;
+    grid-row-start: 3;
+    grid-row-end: span 9;
     display:flex;
     flex-direction: column;
-    gap:23%;
+    justify-content: center;
+    gap:60px;
   }
   
   div.rank-list {
@@ -86,25 +87,36 @@ div.dashboard {
     grid-column-start: span 2;
   }
   
-  form.task-creation-menu label {
-    display:flex;
-    flex-direction: column;
-  }
-  
-  label > input:is([type="text"], [type="number"]):read-only {
-    color:rgb(90, 90, 90);
-    border:0;
-    text-overflow: ellipsis;
-    outline:none;
-  }
+form.task-creation-menu label {
+  display:flex;
+  flex-direction: column;
+}
+
 
 div.task-session-container {
   display: flex;
   flex-direction: column;  
-  gap: 10px;
 }
 
 table.rank-table > Link {
   color: black;
 }
 
+div.form-inputs > div {
+  grid-column-start: span 2;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div.form-inputs > div > span:nth-child(1) {
+  font-size:30px;
+  font-weight:700;
+  text-decoration: underline;
+}
+
+div.form-inputs > div > div {
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

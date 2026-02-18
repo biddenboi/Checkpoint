@@ -4,7 +4,7 @@ import { DatabaseConnectionContext } from '../../App.jsx';
 import TaskDatabase from '../../network/Database/TaskDatabase.js';
 import PlayerDatabase from '../../network/Database/PlayerDatabase.js';
 import Stopwatch from '../../components/Stopwatch/Stopwatch.jsx';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 //pass along whether a task session is currently active
 function Dashboard({ inTaskSession, setInTaskSession }) {
@@ -12,45 +12,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
   function TaskMenu() {
     return <form action="" className="task-creation-menu"
       onSubmit={handleSubmit}>
-      <div className="form-inputs">
-        <label>
-          Task Name:
-          <input type="text" name="taskName" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Where will you work:
-          <input type="text" name="location" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Where are your distractions:
-          <input type="text" name="distractions" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Is this task similar to what you did before:
-          <input type="text" name="similarity" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Is this being done early:
-          <input type="text" name="timeOfStart" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Why did you pick this task:
-          <input type="text" name="reasonToSelect" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          How will you maximize efficiency:
-          <input type="text" name="efficiency" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Est. Duration (minutes):
-          <input type="number" name="estimatedDuration" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Est. Buffer (minutes):
-          <input type="number" name="estimatedBuffer" readOnly={inTaskSession}/>
-        </label>
-      </div>
-      {/*[TODO] Consolidate alternative views into seperate react functions */}
+        {TaskDescription()}
       {
         inTaskSession ? 
         <div className="task-session-container">
@@ -96,6 +58,60 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
     </div>
   }
 
+  function TaskDescription() {
+    if (!inTaskSession) {
+      return <div className="form-inputs">
+          <label>
+            Task Name:
+            <input type="text" name="taskName"/>
+          </label>
+          <label>
+            Where will you work:
+            <input type="text" name="location"/>
+          </label>
+          <label>
+            Where are your distractions:
+            <input type="text" name="distractions"/>
+          </label>
+          <label>
+            Is this task similar to what you did before:
+            <input type="text" name="similarity"/>
+          </label>
+          <label>
+            Is this being done early:
+            <input type="text" name="timeOfStart"/>
+          </label>
+          <label>
+            Why did you pick this task:
+            <input type="text" name="reasonToSelect"/>
+          </label>
+          <label>
+            How will you maximize efficiency:
+            <input type="text" name="efficiency"/>
+          </label>
+          <label>
+            Est. Duration (minutes):
+            <input type="number" name="estimatedDuration"/>
+          </label>
+          <label>
+            Est. Buffer (minutes):
+            <input type="number" name="estimatedBuffer"/>
+          </label>
+        </div>
+    }else {
+      return <div className="form-inputs">
+        <div>
+          <span>{draftTask.taskName}</span>
+          <div>
+            <span>{"Purpose: " + draftTask.reasonToSelect}</span>
+            <span>{"Plan: " + draftTask.efficiency}</span>
+            <span>{"Goal Duration: " + draftTask.estimatedDuration + "m with " + draftTask.estimatedBuffer + "m Buffer"}</span>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
   const databaseConnection = useContext(DatabaseConnectionContext);
   const taskDatabase = useMemo(
     () => new TaskDatabase(databaseConnection)
@@ -110,6 +126,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
   const [playerPoints, setPlayerPoints] = useState([]);
   const [taskStartTime, setTaskStartTime] = useState(null);
   const [durationPenalty, setDurationPenalty] = useState(null);
+  const [draftTask, setDraftTask] = useState({});
 
   useEffect(() => { //review method
     //**loads all players** and adds task totals every call. 
@@ -162,21 +179,8 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData(e.target);
-
     const task = {
-      createdAt: new Date().toISOString(),
-      localCreatedAt: new Date().toLocaleString('sv').replace(' ', 'T') + '.000',
-      taskName: formData.get("taskName"),
-      location: formData.get("location"),
-      similarity: formData.get("similarity"),
-      distractions: formData.get("distractions"),
-      timeOfStart: formData.get("timeOfStart"),
-      reasonToSelect: formData.get("reasonToSelect"),
-      efficiency: formData.get("efficiency"),
-      estimatedDuration: formData.get("estimatedDuration"),
-      estimatedBuffer: formData.get("estimatedBuffer"),
+      ...draftTask,
       duration: getTaskDuration(),  
       points: Math.floor(getTaskPoints() - durationPenalty)
     }
@@ -190,10 +194,28 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
   }
 
 
-  const handleStartTask = () => {
+  const handleStartTask = (e) => {
+    const form = e.target.form;
+    const formData = new FormData(form);
+
+    const taskData = {
+      createdAt: new Date().toISOString(),
+      localCreatedAt: new Date().toLocaleString('sv').replace(' ', 'T') + '.000',
+      taskName: formData.get("taskName"),
+      location: formData.get("location"),
+      similarity: formData.get("similarity"), 
+      distractions: formData.get("distractions"),
+      timeOfStart: formData.get("timeOfStart"),
+      reasonToSelect: formData.get("reasonToSelect"),
+      efficiency: formData.get("efficiency"),
+      estimatedDuration: formData.get("estimatedDuration"),
+      estimatedBuffer: formData.get("estimatedBuffer"),
+    }
+
     setInTaskSession(true); //changes visual menu
     setTaskStartTime(Date.now());  // Record when task started
     setDurationPenalty(0);
+    setDraftTask(taskData);
   }
 
   const handleGiveUpTask = async (e) => {
@@ -210,10 +232,8 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
   }
 
   return <div className="dashboard">
-
     {TaskMenu()}
     {RankDisplay()}
-    
   </div>
 }
 
