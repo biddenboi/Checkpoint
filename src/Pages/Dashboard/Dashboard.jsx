@@ -9,6 +9,93 @@ import { useNavigate, Link } from 'react-router-dom';
 //pass along whether a task session is currently active
 function Dashboard({ inTaskSession, setInTaskSession }) {
 
+  function TaskMenu() {
+    return <form action="" className="task-creation-menu"
+      onSubmit={handleSubmit}>
+      <div className="form-inputs">
+        <label>
+          Task Name:
+          <input type="text" name="taskName" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          Where will you work:
+          <input type="text" name="location" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          Where are your distractions:
+          <input type="text" name="distractions" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          Is this task similar to what you did before:
+          <input type="text" name="similarity" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          Is this being done early:
+          <input type="text" name="timeOfStart" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          Why did you pick this task:
+          <input type="text" name="reasonToSelect" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          How will you maximize efficiency:
+          <input type="text" name="efficiency" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          Est. Duration (minutes):
+          <input type="number" name="estimatedDuration" readOnly={inTaskSession}/>
+        </label>
+        <label>
+          Est. Buffer (minutes):
+          <input type="number" name="estimatedBuffer" readOnly={inTaskSession}/>
+        </label>
+      </div>
+      {/*[TODO] Consolidate alternative views into seperate react functions */}
+      {
+        inTaskSession ? 
+        <div className="task-session-container">
+          <div className="task-form-buttons">
+            <button>Complete</button>
+            <button type="button" onClick={handleBrokeFocus}>Broke Focus</button>
+            <button type="button" onClick={handleGiveUpTask}>Give Up</button>
+          </div>
+          <Stopwatch startTime={taskStartTime} durationPenalty={durationPenalty}/> 
+          
+        </div>
+        : <button onClick={handleStartTask} className="task-form-buttons" type="button">Start</button>
+      }
+    </form>
+  }
+
+  function RankDisplay() {
+    return <div className="rank-list">
+      <table className="rank-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            playerPoints.map((element, index) => (
+              <tr key={element.createdAt}>
+                <td>{"#" + (index + 1)}</td>
+                <td><Link 
+                  to="/profile"
+                  state={{ player: element }}
+                  >
+                  {element.username}
+                  </Link></td>
+                <td>{element.points}</td>
+              </tr>))
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
   const databaseConnection = useContext(DatabaseConnectionContext);
   const taskDatabase = useMemo(
     () => new TaskDatabase(databaseConnection)
@@ -123,90 +210,10 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
   }
 
   return <div className="dashboard">
-    <form action="" className="task-creation-menu"
-      onSubmit={handleSubmit}>
-      <div className="form-inputs">
-        <label>
-          Task Name:
-          <input type="text" name="taskName" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Where will you work:
-          <input type="text" name="location" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Where are your distractions:
-          <input type="text" name="distractions" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Is this task similar to what you did before:
-          <input type="text" name="similarity" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Is this being done early:
-          <input type="text" name="timeOfStart" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Why did you pick this task:
-          <input type="text" name="reasonToSelect" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          How will you maximize efficiency:
-          <input type="text" name="efficiency" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Est. Duration (minutes):
-          <input type="number" name="estimatedDuration" readOnly={inTaskSession}/>
-        </label>
-        <label>
-          Est. Buffer (minutes):
-          <input type="number" name="estimatedBuffer" readOnly={inTaskSession}/>
-        </label>
-      </div>
-      {/*[TODO] Consolidate alternative views into seperate react functions */}
-      {
-        inTaskSession ? 
-        <div className="task-session-container">
-          <div className="task-form-buttons">
-            <button>Complete</button>
-            <button type="button" onClick={handleBrokeFocus}>Broke Focus</button>
-            <button type="button" onClick={handleGiveUpTask}>Give Up</button>
-          </div>
-          <Stopwatch startTime={taskStartTime} durationPenalty={durationPenalty}/> 
-          
-        </div>
-        : <button onClick={handleStartTask} className="task-form-buttons" type="button">Start</button>
-      }
-    </form>
-    <div className="todo-list">
-      
-    </div>
-    <div className="rank-list">
-      <table className="rank-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Username</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            playerPoints.map((element, index) => (
-              <tr key={element.createdAt}>
-                <td>{"#" + (index + 1)}</td>
-                <td><Link 
-                  to="/profile"
-                  state={{ player: element }}
-                  >
-                  {element.username}
-                  </Link></td>
-                <td>{element.points}</td>
-              </tr>))
-          }
-        </tbody>
-      </table>
-    </div>
+
+    {TaskMenu()}
+    {RankDisplay()}
+    
   </div>
 }
 

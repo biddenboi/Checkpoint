@@ -41,7 +41,7 @@ div.dashboard {
   form.task-creation-menu {
     grid-column-start: 2;
     grid-column-end: span 4;
-    grid-row-start: 4;
+    grid-row-start: 6;
     grid-row-end: span 3;
     display:flex;
     flex-direction: column;
@@ -108,10 +108,3 @@ table.rank-table > Link {
   color: black;
 }
 
-div.todo-list {
-  border: 1px solid black;
-  grid-column-start: 2;
-  grid-column-end: span 4;
-  grid-row-start: 12;
-  grid-row-end: span 7;
-}
