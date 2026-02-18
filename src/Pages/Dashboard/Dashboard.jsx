@@ -178,6 +178,9 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
         : <button onClick={handleStartTask} className="task-form-buttons" type="button">Start</button>
       }
     </form>
+    <div className="todo-list">
+      
+    </div>
     <div className="rank-list">
       <table className="rank-table">
         <thead>

@@ -3,7 +3,7 @@ div.dashboard {
     height: 100%;
     grid-template-rows: repeat(20, 5%);
     grid-template-columns: repeat(10, 10%);
-  }
+}
   
   table.rank-table, table.rank-table th, table.rank-table td {
     border: 0.1px solid rgb(206, 206, 206);
@@ -52,7 +52,7 @@ div.dashboard {
     grid-column-start: 7;
     grid-column-end: span 3;
     grid-row-start: 3;
-    grid-row-end: span 14;
+    grid-row-end: span 16;
   }
 
   table.rank-table thead {
@@ -98,12 +98,20 @@ div.dashboard {
     outline:none;
   }
 
-  div.task-session-container {
-    display: flex;
-    flex-direction: column;  
-    gap: 10px;
-  }
+div.task-session-container {
+  display: flex;
+  flex-direction: column;  
+  gap: 10px;
+}
 
 table.rank-table > Link {
   color: black;
+}
+
+div.todo-list {
+  border: 1px solid black;
+  grid-column-start: 2;
+  grid-column-end: span 4;
+  grid-row-start: 12;
+  grid-row-end: span 7;
 }

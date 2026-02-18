@@ -8,32 +8,42 @@ div.profile {
 
 div.profile div.profile-banner {
     border: 1px solid black;
-    grid-column-start: 3;
-    grid-column-end: span 6;
+    grid-column-start: 2;
+    grid-column-end: span 8;
     grid-row-start:3;
     grid-row-end: span 3;
+
+    display:grid;
+    grid-template-columns: 1 1 1;
+    grid-template-rows: 1;
 }
 
 
-div.profile div.profile-banner div:nth-child(1) {
+div.stats-subsection {
     display:flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: space-around;
-    height:50%;
+    grid-column-start: 1;
+    grid-column-end: 1;
 }
 
-div.profile-banner div div {
-    
+div.stats-subsection > span:nth-child(1) {
     font-size:15px;
-    font-weight:400;
-    display: flex;
-    flex-direction:column;
+    font-weight: bold;
+    margin-top: -15px;
 }
 
-div.profile-banner div span:nth-child(2) {
+div.stats-subsection > span:nth-child(2) {
+    font-size:40px;
+    font-weight: bold;
+}
+
+div.profile-banner div.description-subsection span:nth-child(2) {
     font-size:30px;
     font-weight:600;
     margin-top: -7px;
+    display:flex;
 }
 
 div.task-history-display {
@@ -63,10 +73,10 @@ table.task-table tr > td {
 }
 
 div.profile-banner > div.description-subsection {
-    height:40%;
-    padding:20px;
     display:flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     font-size: 17px;
+    grid-column-start: 2;
+    grid-column-end: span 2;
 }

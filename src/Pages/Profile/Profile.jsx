@@ -20,26 +20,28 @@ function Profile() {
   }
 
   return <div className="profile">
-      <div className="profile-banner">
-            <div className="stats-subsection">
-                <div>
-                    <span>Username:</span>
-                    <span>{player.username}</span>
-                </div>
-                <div>
-                    <span>Final Points:</span>
-                    <span>{player.points}</span>
-                </div>
-                <div>
-                    <span>Completions:</span>
-                    <span>{player.tasks.length}</span>
-                </div>
+           
+    <div className="profile-banner">
+        <div className="stats-subsection">
+            <span>{player.localCreatedAt.split("T")[0]}</span>
+            <span>{player.username}</span>
+            <span>{player.description ? '"'+player.description+'"' : "No Bio."}</span>
+        </div>
+        <div className="description-subsection">
+            <div>
+                
             </div>
-            <div className="description-subsection">
-                <span>{player.description ? '"'+player.description+'"' : "No Bio."}</span>
+            <div>
+                <span>Final Points:</span>
+                <span>{player.points}</span>
             </div>
-      </div>
-      <div className="task-history-display">
+            <div>
+                <span>Completions:</span>
+                <span>{player.tasks.length}</span>
+            </div>
+        </div>
+    </div>
+    <div className="task-history-display">
         <table className="task-table">
             <thead>
                 <tr>
