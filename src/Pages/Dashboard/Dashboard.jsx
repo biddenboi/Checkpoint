@@ -82,11 +82,6 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
             onChange={e => setDraftTask(prev => ({ ...prev, similarity: e.target.value }))}/>
           </label>
           <label>
-            Is this being done early:
-            <input type="text" name="timeOfStart"
-            onChange={e => setDraftTask(prev => ({ ...prev, timeOfStart: e.target.value }))}/>
-          </label>
-          <label>
             Why did you pick this task:
             <input type="text" name="reasonToSelect"
             onChange={e => setDraftTask(prev => ({ ...prev, reasonToSelect: e.target.value }))}/>
