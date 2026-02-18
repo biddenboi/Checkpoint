@@ -24,7 +24,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
           <Stopwatch startTime={taskStartTime} durationPenalty={durationPenalty}/> 
           
         </div>
-        : <button onClick={handleStartTask} className="task-form-buttons" type="button">Start</button>
+        : <button onClick={handleStartTask} className="task-form-buttons" type="button" disabled={taskInputsFilled() ? false : true}>Start</button>
       }
     </form>
   }
@@ -63,39 +63,48 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
       return <div className="form-inputs">
           <label>
             Task Name:
-            <input type="text" name="taskName"/>
+            <input type="text" name="taskName" 
+            onChange={e => setDraftTask(prev => ({ ...prev, taskName: e.target.value }))}/>
           </label>
           <label>
             Where will you work:
-            <input type="text" name="location"/>
+            <input type="text" name="location"
+            onChange={e => setDraftTask(prev => ({ ...prev, location: e.target.value }))}/>
           </label>
           <label>
             Where are your distractions:
-            <input type="text" name="distractions"/>
+            <input type="text" name="distractions"
+            onChange={e => setDraftTask(prev => ({ ...prev, distractions: e.target.value }))}/>
           </label>
           <label>
             Is this task similar to what you did before:
-            <input type="text" name="similarity"/>
+            <input type="text" name="similarity"
+            onChange={e => setDraftTask(prev => ({ ...prev, similarity: e.target.value }))}/>
           </label>
           <label>
             Is this being done early:
-            <input type="text" name="timeOfStart"/>
+            <input type="text" name="timeOfStart"
+            onChange={e => setDraftTask(prev => ({ ...prev, timeOfStart: e.target.value }))}/>
           </label>
           <label>
             Why did you pick this task:
-            <input type="text" name="reasonToSelect"/>
+            <input type="text" name="reasonToSelect"
+            onChange={e => setDraftTask(prev => ({ ...prev, reasonToSelect: e.target.value }))}/>
           </label>
           <label>
             How will you maximize efficiency:
-            <input type="text" name="efficiency"/>
+            <input type="text" name="efficiency"
+            onChange={e => setDraftTask(prev => ({ ...prev, efficiency: e.target.value }))}/>
           </label>
           <label>
             Est. Duration (minutes):
-            <input type="number" name="estimatedDuration"/>
+            <input type="number" name="estimatedDuration"
+            onChange={e => setDraftTask(prev => ({ ...prev, estimatedDuration: e.target.value }))}/>
           </label>
           <label>
             Est. Buffer (minutes):
-            <input type="number" name="estimatedBuffer"/>
+            <input type="number" name="estimatedBuffer"
+            onChange={e => setDraftTask(prev => ({ ...prev, estimatedBuffer: e.target.value }))}/>
           </label>
         </div>
     }else {
@@ -127,6 +136,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
   const [taskStartTime, setTaskStartTime] = useState(null);
   const [durationPenalty, setDurationPenalty] = useState(null);
   const [draftTask, setDraftTask] = useState({});
+
 
   useEffect(() => { //review method
     //**loads all players** and adds task totals every call. 
@@ -173,6 +183,12 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
     return taskStartTime ? Date.now() - taskStartTime : 0;
   }
 
+  const taskInputsFilled = (e) => {
+    return draftTask.taskName && draftTask.location && draftTask.similarity &&
+    draftTask.distractions && draftTask.reasonToSelect && draftTask.efficiency &&
+    draftTask.estimatedDuration && draftTask.estimatedBuffer;
+  }
+
   const getTaskPoints = () => {
     return Math.floor(getTaskDuration() / 10000);
   }
@@ -190,26 +206,16 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
     setInTaskSession(false); // Reset the start time
     setTaskStartTime(null);  
     setDurationPenalty(null);
+    setDraftTask({});
     e.target.reset();
   }
 
 
   const handleStartTask = (e) => {
-    const form = e.target.form;
-    const formData = new FormData(form);
-
     const taskData = {
+      ...draftTask,
       createdAt: new Date().toISOString(),
       localCreatedAt: new Date().toLocaleString('sv').replace(' ', 'T') + '.000',
-      taskName: formData.get("taskName"),
-      location: formData.get("location"),
-      similarity: formData.get("similarity"), 
-      distractions: formData.get("distractions"),
-      timeOfStart: formData.get("timeOfStart"),
-      reasonToSelect: formData.get("reasonToSelect"),
-      efficiency: formData.get("efficiency"),
-      estimatedDuration: formData.get("estimatedDuration"),
-      estimatedBuffer: formData.get("estimatedBuffer"),
     }
 
     setInTaskSession(true); //changes visual menu
@@ -223,6 +229,7 @@ function Dashboard({ inTaskSession, setInTaskSession }) {
     setInTaskSession(false);
     setTaskStartTime(null);  // Reset start time when giving up
     setDurationPenalty(0);
+    setDraftTask({});
   }
 
   const handleBrokeFocus = async(e) => {
